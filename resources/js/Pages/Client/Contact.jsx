@@ -27,13 +27,13 @@ const Contact = () => {
     };
 
     const socialLinks = [
-        { icon: Facebook, href: "#", label: "Facebook" },
-        { icon: Twitter, href: "#", label: "Twitter" },
-        { icon: Linkedin, href: "#", label: "LinkedIn" },
-        { icon: Instagram, href: "#", label: "Instagram" },
-        { icon: Youtube, href: "#", label: "YouTube" },
-        { icon: Github, href: "#", label: "GitHub" },
-        { icon: MessageCircle, href: "#", label: "Messenger" },
+        // { icon: Facebook, href: "#", label: "Facebook" },
+        // { icon: Twitter, href: "#", label: "Twitter" },
+        // { icon: Linkedin, href: "#", label: "LinkedIn" },
+        // { icon: Instagram, href: "#", label: "Instagram" },
+        // { icon: Youtube, href: "#", label: "YouTube" },
+        // { icon: Github, href: "#", label: "GitHub" },
+        // { icon: MessageCircle, href: "#", label: "Messenger" },
     ];
 
     const contactDetails = [
@@ -45,16 +45,16 @@ const Contact = () => {
         },
         {
             icon: Phone,
-            text: "+251 912 345 678",
-            subtext: "Mon-Fri, 9AM-6PM",
+            text: "+251 908080929",
+            subtext: "Phone Address",
             delay: "100",
         },
-        {
-            icon: Mail,
-            text: "info@meskotdigitals.com",
-            subtext: "We reply within 24 hours",
-            delay: "150",
-        },
+        // {
+        //     icon: Mail,
+        //     text: "info@meskotdigitals.com",
+        //     subtext: "We reply within 24 hours",
+        //     delay: "150",
+        // },
     ];
 
     return (

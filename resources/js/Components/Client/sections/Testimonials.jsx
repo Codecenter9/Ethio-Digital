@@ -54,14 +54,20 @@ const testimonials = [
 
 const Testimonials = () => {
     return (
-        <section
-            className="relative py-12 md:pt-24 px-6 md:px-12"
-            aria-labelledby="testimonials-heading"
-        >
+        <section className="relative overflow-hidden" aria-labelledby="testimonials-heading">
+            <div className="absolute w-full -top-[170px] md:-top-[420px]">
+                <img
+                    src="/images/image1.webp"
+                    loading="lazy"
+                    className="w-full h-full object-cover opacity-30 rounded-3xl"
+                    alt="Background"
+                />
+            </div>
+
             {/* Decorative elements */}
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl" />
 
-            <div className="relative max-w-7xl mx-auto z-10">
+            <div className="relative max-w-7xl  py-12 md:pt-24 px-6 md:px-12 mx-auto z-10">
                 {/* Section heading */}
                 <SectionHeading
                     subtitle="Testimonials"

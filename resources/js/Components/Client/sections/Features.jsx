@@ -49,54 +49,56 @@ const features = [
 const Features = () => {
     return (
         <section
-            className="relative py-16 px-6 md:px-12 mx-auto"
+            className="relative mx-auto"
             aria-labelledby="features-heading"
         >
             {/* Background decoration */}
             <div className="absolute -top-[500px] -right-[900px] md:-right-[800px] -rotate-45">
                 <img
-                    src="/images/image2.jpg"
+                    src="/images/image2.webp"
+                    loading="lazy"
                     className="inset-0 w-full h-full object-cover opacity-5 rounded-3xl animate-in"
                     alt="Background"
                 />
             </div>
 
-            {/* Section heading */}
-            <SectionHeading
-                subtitle="Features"
-                title="Key Features"
-                description="Explore the innovative tools and solutions that set Meskot Digitals apart and help you achieve more."
-            />
+            <div className="py-16 px-6 md:px-12">
+                <SectionHeading
+                    subtitle="Features"
+                    title="Key Features"
+                    description="Explore the innovative tools and solutions that set Meskot Digitals apart and help you achieve more."
+                />
 
-            {/* Features list */}
-            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 relative z-10">
-                {features.map((feature, idx) => (
-                    <li
-                        key={idx}
-                        data-aos="fade-up"
-                        data-aos-delay={100 + idx * 50}
-                        className="relative flex items-start gap-5 p-6 rounded-xl 
+                {/* Features list */}
+                <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10 relative z-10">
+                    {features.map((feature, idx) => (
+                        <li
+                            key={idx}
+                            data-aos="fade-up"
+                            data-aos-delay={100 + idx * 50}
+                            className="relative flex items-start gap-5 p-6 rounded-xl 
                                    bg-gradient-to-br from-gray-800/40 via-gray-900/40 to-black/40
                                    border border-gray-800/50 shadow-sm shadow-cyan-500/5
                                    group overflow-hidden transition-all duration-300 hover:scale-[1.02]"
-                    >
-                        {/* Icon container */}
-                        <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gray-800/60 flex items-center justify-center group-hover:bg-gray-700/70 transition-colors">
-                            {feature.icon}
-                        </div>
+                        >
+                            {/* Icon container */}
+                            <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-gray-800/60 flex items-center justify-center group-hover:bg-gray-700/70 transition-colors">
+                                {feature.icon}
+                            </div>
 
-                        {/* Title + description */}
-                        <div>
-                            <h3 className="text-lg font-semibold text-white mb-2">
-                                {feature.title}
-                            </h3>
-                            <p className="text-gray-400 group-hover:text-gray-300 transition-colors">
-                                {feature.description}
-                            </p>
-                        </div>
-                    </li>
-                ))}
-            </ul>
+                            {/* Title + description */}
+                            <div>
+                                <h3 className="text-lg font-semibold text-white mb-2">
+                                    {feature.title}
+                                </h3>
+                                <p className="text-gray-400 group-hover:text-gray-300 transition-colors">
+                                    {feature.description}
+                                </p>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </section>
     );
 };

@@ -38,19 +38,18 @@ const steps = [
 const ProductTimeline = () => {
     return (
         <section
-            className="relative w-full px-6 md:px-12 py-12 md:py-24 backdrop-blur border border-purple-500/20 shadow-2xl rounded-3xl overflow-hidden"
+            className="relative w-full backdrop-blur border border-purple-500/20 shadow-2xl rounded-3xl overflow-hidden"
             aria-labelledby="process-heading"
         >
-            {/* Decorative background */}
-            <div className="absolute -top-32 -left-[800px] rotate-45">
+            <div className="absolute w-full -bottom-[180px] md:-bottom-[470px]">
                 <img
-                    src="/images/image4.jpg"
-                    className="inset-0 w-full h-full object-cover opacity-10 rounded-3xl"
+                    src="/images/image1.webp"
+                    loading="lazy"
+                    className="w-full h-full object-cover opacity-30 rounded-3xl"
                     alt="Background"
                 />
             </div>
-
-            <div className="mx-auto">
+            <div className="mx-auto px-6 md:px-12 py-12 md:py-24 ">
                 <SectionHeading
                     subtitle="How We Work"
                     title="Our Process"

@@ -47,7 +47,7 @@ export default function Home({ blogs, projects }) {
                 <meta name="twitter:image" content={meta.image} />
             </Head>
 
-            <div className=" bg-gray-950/9 text-white">
+            <div className="relative bg-gray-950/9 text-white">
                 <Hero />
                 <Counters />
                 <About />

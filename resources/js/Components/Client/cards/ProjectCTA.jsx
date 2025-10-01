@@ -1,12 +1,13 @@
 import { Link } from "@inertiajs/react";
 import { ArrowRight, Sparkles, Rocket, MessageCircle } from "lucide-react";
 import React from "react";
+import AdvancedShapes from "./Shapes";
 
 const ProjectCTA = () => {
     return (
         <div className="relative">
             {/* Background Glow Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 blur-3xl rounded-3xl -z-10"></div>
+            <div className="absolute inset-0 backdrop-blur-3xl rounded-3xl -z-10"></div>
 
             <div
                 data-aos="fade-up"
@@ -16,7 +17,7 @@ const ProjectCTA = () => {
                 aria-labelledby="cta-heading"
             >
                 <div className="relative inline-flex flex-col w-full items-center gap-8 p-10 rounded-3xl bg-gradient-to-br from-gray-900/60 via-gray-800/40 to-gray-900/60 backdrop-blur-lg shadow-2xl shadow-black/40 border border-gray-700/40 hover:border-purple-500/30 transition-all duration-500">
-                    {/* Floating Elements */}
+                    <AdvancedShapes />
                     <div className="absolute top-4 left-4 opacity-20">
                         <Sparkles className="w-6 h-6 text-purple-400 animate-pulse" />
                     </div>
