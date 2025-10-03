@@ -23,7 +23,7 @@ export default function Hero() {
         >
             <Spotlight />
 
-            <div className="relative max-w-5xl z-10 px-6 mx-auto flex flex-col items-center text-center">
+            <div className="relative max-w-5xl z-10 px-6 mx-auto flex flex-col items-start md:items-center md:text-center">
                 <div
                     className="top-6 z-20 mb-8"
                     data-aos="fade-up"

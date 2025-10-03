@@ -54,24 +54,20 @@ const Footer = () => {
                         Useful Links
                     </h3>
                     <ul className="space-y-2">
-                        {[
-                            "Home",
-                            "About Us",
-                            "Projects",
-                            "Blog",
-                            "Contact",
-                        ].map((link, idx) => (
-                            <li key={idx}>
-                                <Link
-                                    href={`/${link
-                                        .toLowerCase()
-                                        .replace(" ", "")}`}
-                                    className="hover:text-blue-400 transition-colors duration-300"
-                                >
-                                    {link}
-                                </Link>
-                            </li>
-                        ))}
+                        {["Home", "About", "Projects", "News", "Contact"].map(
+                            (link, idx) => (
+                                <li key={idx}>
+                                    <Link
+                                        href={`/${link
+                                            .toLowerCase()
+                                            .replace(" ", "")}`}
+                                        className="hover:text-blue-400 transition-colors duration-300"
+                                    >
+                                        {link}
+                                    </Link>
+                                </li>
+                            )
+                        )}
                     </ul>
                 </div>
 
@@ -89,9 +85,7 @@ const Footer = () => {
                         ].map((service, idx) => (
                             <li key={idx}>
                                 <Link
-                                    href={`/services/${service
-                                        .toLowerCase()
-                                        .replace(/\s/g, "")}`}
+                                    href="#"
                                     className="hover:text-blue-400 transition-colors duration-300"
                                 >
                                     {service}

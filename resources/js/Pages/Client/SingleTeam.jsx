@@ -54,7 +54,7 @@ const SingleTeamMember = ({ teamMember }) => {
                                     className="object-cover w-full h-full transition-transform duration-500 hover:scale-105"
                                     onError={(e) =>
                                         (e.currentTarget.src =
-                                            "/images/team.webp")
+                                            "/images/teams.webp")
                                     }
                                 />
                             </div>
