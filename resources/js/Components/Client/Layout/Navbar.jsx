@@ -44,7 +44,7 @@ const Navbar = () => {
                         <div className="relative w-full h-full z-10 flex items-center justify-center">
                             <img
                                 src="/logo/MDlogo2.png"
-                                className="w-12 h-12 md:w-14 md:h-14 object-cover drop-shadow-lg filter brightness-110"
+                                className="w-10 h-10 md:w-14 md:h-14 object-cover drop-shadow-lg filter brightness-110"
                                 alt="Meskot Digital"
                             />
                         </div>
