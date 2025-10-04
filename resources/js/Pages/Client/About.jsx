@@ -49,7 +49,7 @@ export default function About() {
                 />
 
                 <section className="relative bg-gray-950 z-10 max-w-full pt-12 md:pt-24 px-6 md:px-12 mx-auto space-y-12">
-                    <div className="relative flex flex-col gap-5 rounded-2xl bg-gray-900/30">
+                    <div className="relative flex flex-col gap-0 rounded-2xl bg-gray-900/30">
                         <div className="absolute -top-20 -right-20 w-40 h-40 bg-pink-500/10 rounded-full blur-xl"></div>
                         <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500/10 rounded-full blur-xl"></div>
 

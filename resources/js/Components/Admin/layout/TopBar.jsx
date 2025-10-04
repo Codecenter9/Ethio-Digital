@@ -139,8 +139,9 @@ export default function Topbar({ onMenuClick }) {
                             >
                                 <img
                                     src={
-                                        `/storage/${user.profile_photo}` ||
-                                        "/images/team.webp"
+                                        user.profile_photo
+                                            ? `/storage/${user.profile_photo}`
+                                            : "/images/teams.webp"
                                     }
                                     loading="lazy"
                                     alt={user.name || "User avatar"}
