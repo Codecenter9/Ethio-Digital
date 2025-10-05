@@ -62,7 +62,7 @@ const Teams = ({ teams }) => {
                             >
                                 <div className="relative group w-full h-[350px] overflow-hidden rounded-xl shadow-lg">
                                     <img
-                                        src={`/storage/${member.profile_photo}`}
+                                        src={member.profile_url}
                                         loading="lazy"
                                         alt={member.name}
                                         className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"

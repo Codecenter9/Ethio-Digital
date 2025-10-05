@@ -87,7 +87,7 @@ export default function BlogList({ blogs }) {
                                             {/* Image */}
                                             <div className="relative h-56 overflow-hidden">
                                                 <img
-                                                    src={`storage/${blog.image}`}
+                                                    src={blog.image_url}
                                                     loading="lazy"
                                                     alt={`${blog.title} cover`}
                                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -260,7 +260,7 @@ export default function BlogList({ blogs }) {
                                 >
                                     <div className="flex-shrink-0 relative w-16 h-16 rounded-lg overflow-hidden">
                                         <img
-                                            src={`storage/${blog.image}`}
+                                            src={blog.image_url}
                                             alt={`${blog.title} thumbnail`}
                                             className="w-full h-full object-cover"
                                         />

@@ -46,7 +46,7 @@ const SingleTeamMember = ({ teamMember }) => {
                                 <img
                                     src={
                                         teamMember.profile_photo
-                                            ? `/storage/${teamMember.profile_photo}`
+                                            ? teamMember.profile_url
                                             : "/images/teams.webp"
                                     }
                                     loading="lazy"

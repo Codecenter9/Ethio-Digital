@@ -70,7 +70,7 @@ const RecentProjects = ({ projects }) => {
                                 >
                                     <div className="relative h-80 overflow-hidden">
                                         <img
-                                            src={`/storage/${project.project_photo}`}
+                                            src={project.image_url}
                                             loading="lazy"
                                             alt={project.project_name}
                                             className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
