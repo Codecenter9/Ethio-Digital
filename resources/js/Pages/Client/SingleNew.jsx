@@ -134,7 +134,7 @@ const SingleBlogPage = ({ blog, blogs }) => {
                             {/* Featured Image */}
                             <div className="relative h-80 md:h-96 rounded-2xl overflow-hidden mb-10">
                                 <img
-                                    src={blog.image}
+                                    src={blog.image_url}
                                     loading="lazy"
                                     alt={blog.title}
                                     className="w-full h-full object-cover"
