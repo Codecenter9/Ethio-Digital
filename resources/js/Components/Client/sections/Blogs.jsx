@@ -29,9 +29,9 @@ const Blogs = ({ blogs }) => {
                             {/* Image */}
                             <div className="relative h-64 overflow-hidden">
                                 <img
-                                    src={`/storage/${blogs[0].image}`}
+                                    src={blogs[0].image}
                                     loading="lazy"
-                                    alt={`${blogs[0].title} cover image`}
+                                    alt={blogs[0].title}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
                                 <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-gray-900/80 backdrop-blur-sm text-xs font-medium text-purple-300">
@@ -80,21 +80,6 @@ const Blogs = ({ blogs }) => {
                                 </div>
 
                                 <footer className="flex items-center justify-between">
-                                    {/* <div className="flex items-center gap-4 text-gray-400">
-                                        <div className="flex items-center gap-2 text-sm text-gray-300">
-                                            <Heart className="w-5 h-5 text-pink-500" />
-                                            <span>{blogs[0].likes}</span>
-                                        </div>
-
-                                        <div className="flex items-center gap-1">
-                                            <MessageCircle className="w-4 h-4" />
-                                            <span>
-                                                {blogs[0].comments || 0}
-                                            </span>
-                                        </div>
-                                        <span>{blogs[0].readTime}</span>
-                                    </div> */}
-
                                     <Link
                                         href={`/news/${blogs[0].slug}`}
                                         className="inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors font-medium"
@@ -121,7 +106,7 @@ const Blogs = ({ blogs }) => {
                                 {/* Image */}
                                 <div className="relative md:w-2/5 h-48 md:h-auto overflow-hidden">
                                     <img
-                                        src={`/storage/${blog.image}`}
+                                        src={blog.image}
                                         alt={`${blog.title} cover image`}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                     />
@@ -166,20 +151,6 @@ const Blogs = ({ blogs }) => {
                                     </div>
 
                                     <footer className="flex items-center justify-between">
-                                        {/* <div className="flex items-center gap-4 text-gray-400">
-                                            <div className="flex items-center gap-2 text-sm text-gray-300">
-                                                <Heart className="w-4 h-4 text-pink-500" />
-                                                <span>{blog.likes}</span>
-                                            </div>
-
-                                            <div className="flex items-center gap-1">
-                                                <MessageCircle className="w-4 h-4" />
-                                                <span>
-                                                    {blog.comments || 0}
-                                                </span>
-                                            </div>
-                                        </div> */}
-
                                         <Link
                                             href={`/news/${blog.slug}`}
                                             className="inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors font-medium text-sm"

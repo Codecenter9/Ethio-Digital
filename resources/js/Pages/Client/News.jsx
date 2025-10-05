@@ -4,7 +4,7 @@ import BlogList from "@/Components/Client/cards/BlogList";
 import { SharedHero } from "@/Components/Client/Layout/SharedHero";
 import ClientLayout from "@/Layouts/ClientLayout/ClientLayout";
 
-export default function BlogPage({ blogs }) {
+export default function BlogPage() {
     const meta = {
         title: "Our Blogs | Meskot Digital Solutions",
         description:
@@ -48,7 +48,7 @@ export default function BlogPage({ blogs }) {
                 />
 
                 <div className="mx-auto py-12 md:py-24 px-6 md:px-12">
-                    <BlogList blogs={blogs} />
+                    <BlogList />
                 </div>
             </main>
         </>

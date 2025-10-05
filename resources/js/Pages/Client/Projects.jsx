@@ -4,8 +4,9 @@ import { Link, Head } from "@inertiajs/react";
 import { Dropdown } from "@/Components/Client/Layout/DropDown";
 import ClientLayout from "@/Layouts/ClientLayout/ClientLayout";
 import { SharedHero } from "@/Components/Client/Layout/SharedHero";
+import projects from "@/Components/data/projects";
 
-const Projects = ({ projects }) => {
+const Projects = () => {
     const [activeCategory, setActiveCategory] = useState("All");
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -104,7 +105,7 @@ const Projects = ({ projects }) => {
 
                                         <div className="relative h-80 overflow-hidden">
                                             <img
-                                                src={project.image_url}
+                                                src={project.image}
                                                 loading="lazy"
                                                 alt={project.project_name}
                                                 className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
@@ -128,7 +129,7 @@ const Projects = ({ projects }) => {
                                                     </h3>
                                                     <p className="text-gray-300 text-sm leading-relaxed mb-6 line-clamp-3">
                                                         {project.description ||
-                                                            "A cutting-edge digital solution crafted with modern technologies and innovative design principles to deliver exceptional user experiences and business results."}
+                                                            ""}
                                                     </p>
                                                 </div>
                                             </div>
@@ -141,16 +142,21 @@ const Projects = ({ projects }) => {
                                                     <h3 className="text-lg font-bold text-white mb-1 line-clamp-1">
                                                         {project.project_name}
                                                     </h3>
-                                                    <p className="text-gray-400 text-sm">
-                                                        Completed Project
-                                                    </p>
+                                                    {project.completed ? (
+                                                        <p className="text-gray-400 text-sm">
+                                                            Completed Project
+                                                        </p>
+                                                    ) : (
+                                                        ""
+                                                    )}
                                                 </div>
-                                                <Link
+                                                <a
                                                     href={project.project_url}
+                                                    target="_blank"
                                                     className="p-3 rounded-xl bg-gray-700/50 hover:bg-purple-600 transition-all duration-300 group/link border border-gray-600/50 hover:border-purple-500/50"
                                                 >
                                                     <ArrowRight className="w-5 h-5 text-gray-400 group-hover/link:text-white transform group-hover/link:translate-x-1 transition-all duration-300" />
-                                                </Link>
+                                                </a>
                                             </div>
                                         </div>
 

@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\Blog;
+use App\Models\Comment;
 use App\Models\Email;
-use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -16,17 +16,8 @@ class PageController extends Controller
 {
     public function home()
     {
-        $projects = Project::latest()->take(5)->get()->map(function ($project) {
-            $project->image_url = asset('storage/' . $project->project_photo);
-            return $project;
-        });
 
-        $blogs = Blog::latest()->take(5)->get();
-
-        return Inertia::render('Client/Home', [
-            'projects' => $projects,
-            'blogs' => $blogs,
-        ]);
+        return Inertia::render('Client/Home');
     }
 
     public function about()
@@ -62,18 +53,8 @@ class PageController extends Controller
 
     public function projects()
     {
-        $projects = Project::all()->map(function ($project) {
-            if ($project->project_photo && Storage::disk('public')->exists($project->project_photo)) {
-                $project->image_url = asset('storage/' . $project->project_photo);
-            } else {
-                $project->image_url = null; // leave null (no default)
-            }
-            return $project;
-        });
 
-        return Inertia::render('Client/Projects', [
-            'projects' => $projects,
-        ]);
+        return Inertia::render('Client/Projects');
     }
 
     public function services()
@@ -88,42 +69,16 @@ class PageController extends Controller
 
     public function news()
     {
-        $blogs = Blog::all()->map(function ($blog) {
-            if ($blog->image && Storage::disk('public')->exists($blog->image)) {
-                $blog->image_url = asset('storage/' . $blog->image);
-            } else {
-                $blog->image_url = null;
-            }
-            return $blog;
-        });
 
-        return Inertia::render('Client/News', [
-            'blogs' => $blogs,
-        ]);
+        return Inertia::render('Client/News');
     }
 
     public function singlenew($slug)
     {
-        $blog = Blog::where('slug', $slug)->firstOrFail();
-
-        if ($blog->image && Storage::disk('public')->exists($blog->image)) {
-            $blog->image_url = asset('storage/' . $blog->image);
-        } else {
-            $blog->image_url = null;
-        }
-
-        $blogs = Blog::latest()->take(5)->get()->map(function ($item) {
-            if ($item->image && Storage::disk('public')->exists($item->image)) {
-                $item->image_url = asset('storage/' . $item->image);
-            } else {
-                $item->image_url = null;
-            }
-            return $item;
-        });
-
+        $comments = Comment::where('status', false)->get();
         return Inertia::render('Client/SingleNew', [
-            'blog' => $blog,
-            'blogs' => $blogs,
+            'slug' => $slug,
+            'comments' => $comments,
         ]);
     }
 

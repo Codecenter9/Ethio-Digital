@@ -10,8 +10,10 @@ import React from "react";
 import { Head } from "@inertiajs/react";
 import RecentProjects from "@/Components/Client/sections/RecentProjects";
 import ContactForm from "@/Components/Client/cards/Form";
+import blogs from "@/Components/data/blogs";
+import projects from "@/Components/data/projects";
 
-export default function Home({ blogs, projects }) {
+export default function Home() {
     const meta = {
         title: "Meskot Digital Solutions | Software Development, Marketing & Creative Services",
         description:

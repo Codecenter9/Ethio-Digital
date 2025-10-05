@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EmailController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\TeamsController;
+use App\Http\Controllers\Client\CommentController;
 use App\Http\Controllers\Client\PageController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -23,6 +24,8 @@ Route::get('/contact', [PageController::class, 'contact'])->name('client.contact
 Route::get('/news', [PageController::class, 'news'])->name('client.news');
 Route::get('/news/{slug}', [PageController::class, 'singlenew'])->name('client.singlenew');
 Route::post('/emails/send', [PageController::class, 'store'])->name('emails.store');
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
 
 Route::middleware(['auth'])
     ->prefix('admin')

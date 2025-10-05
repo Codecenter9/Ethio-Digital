@@ -10,8 +10,9 @@ import {
 } from "lucide-react";
 import { Dropdown } from "@/Components/Client/Layout/DropDown";
 import { Link } from "@inertiajs/react";
+import blogs from "@/Components/data/blogs";
 
-export default function BlogList({ blogs }) {
+export default function BlogList() {
     const [visibleCount, setVisibleCount] = useState(6);
     const [loading, setLoading] = useState(true);
     const [activeCategory, setActiveCategory] = useState("All");
@@ -87,7 +88,7 @@ export default function BlogList({ blogs }) {
                                             {/* Image */}
                                             <div className="relative h-56 overflow-hidden">
                                                 <img
-                                                    src={blog.image_url}
+                                                    src={blog.image}
                                                     loading="lazy"
                                                     alt={`${blog.title} cover`}
                                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
@@ -109,11 +110,6 @@ export default function BlogList({ blogs }) {
                                                     </Link>
                                                 </header>
 
-                                                <p className="text-gray-400 mb-4 line-clamp-2">
-                                                    {blog.description}
-                                                </p>
-
-                                                {/* Meta info */}
                                                 <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                                                     <div className="flex items-center gap-2">
                                                         <User className="w-7 h-7" />{" "}
@@ -144,7 +140,7 @@ export default function BlogList({ blogs }) {
                                                 </div>
 
                                                 <footer className="flex items-center justify-between">
-                                                    <div className="flex items-center gap-4 text-gray-400">
+                                                    {/* <div className="flex items-center gap-4 text-gray-400">
                                                         <div className="flex items-center gap-2 text-sm text-gray-300">
                                                             <Heart className="w-5 h-5 text-pink-500" />
                                                             <span>
@@ -162,7 +158,7 @@ export default function BlogList({ blogs }) {
                                                         <span>
                                                             {blog.readTime}
                                                         </span>
-                                                    </div>
+                                                    </div> */}
 
                                                     <Link
                                                         href={`/news/${blog.slug}`}
@@ -260,7 +256,7 @@ export default function BlogList({ blogs }) {
                                 >
                                     <div className="flex-shrink-0 relative w-16 h-16 rounded-lg overflow-hidden">
                                         <img
-                                            src={blog.image_url}
+                                            src={blog.image}
                                             alt={`${blog.title} thumbnail`}
                                             className="w-full h-full object-cover"
                                         />
@@ -315,33 +311,6 @@ export default function BlogList({ blogs }) {
                                 </span>
                             ))}
                         </div>
-                    </section>
-
-                    {/* Newsletter */}
-                    <section
-                        data-aos="fade-up"
-                        data-aos-delay={50}
-                        className="bg-gradient-to-br from-purple-900/30 to-pink-900/30 p-6 rounded-2xl border border-purple-500/20"
-                    >
-                        <h2 className="text-lg font-semibold mb-3 text-white">
-                            Subscribe
-                        </h2>
-                        <p className="text-gray-300 text-sm mb-4">
-                            Get the latest articles delivered to your inbox.
-                        </p>
-                        <form className="space-y-3">
-                            <input
-                                type="email"
-                                placeholder="Your email address"
-                                className="w-full px-4 py-2 rounded-lg bg-gray-800/50 border border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                            />
-                            <button
-                                type="submit"
-                                className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition"
-                            >
-                                Subscribe
-                            </button>
-                        </form>
                     </section>
                 </aside>
             </div>

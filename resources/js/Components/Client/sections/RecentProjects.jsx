@@ -5,7 +5,6 @@ import { Link } from "@inertiajs/react";
 import ProjectCTA from "../cards/ProjectCTA";
 
 const RecentProjects = ({ projects }) => {
-    // Extract unique categories
     const categories = useMemo(() => {
         const unique = [...new Set(projects.map((p) => p.category))];
         return ["All", ...unique];
@@ -13,7 +12,6 @@ const RecentProjects = ({ projects }) => {
 
     const [activeCategory, setActiveCategory] = useState("All");
 
-    // Filter projects by active category
     const filteredProjects =
         activeCategory === "All"
             ? projects
@@ -70,7 +68,7 @@ const RecentProjects = ({ projects }) => {
                                 >
                                     <div className="relative h-80 overflow-hidden">
                                         <img
-                                            src={project.image_url}
+                                            src={project.image}
                                             loading="lazy"
                                             alt={project.project_name}
                                             className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-110"
@@ -105,16 +103,21 @@ const RecentProjects = ({ projects }) => {
                                                 <h3 className="text-lg font-bold text-white mb-1 line-clamp-1">
                                                     {project.project_name}
                                                 </h3>
-                                                <p className="text-gray-400 text-sm">
-                                                    Completed Project
-                                                </p>
+                                                {project.completed ? (
+                                                    <p className="text-gray-400 text-sm">
+                                                        Completed Project
+                                                    </p>
+                                                ) : (
+                                                    ""
+                                                )}
                                             </div>
-                                            <Link
+                                            <a
                                                 href={project.project_url}
+                                                target="_blank"
                                                 className="p-3 rounded-xl bg-gray-700/50 hover:bg-purple-600 transition-all duration-300 group/link border border-gray-600/50 hover:border-purple-500/50"
                                             >
                                                 <ArrowRight className="w-5 h-5 text-gray-400 group-hover/link:text-white transform group-hover/link:translate-x-1 transition-all duration-300" />
-                                            </Link>
+                                            </a>
                                         </div>
                                     </div>
 
