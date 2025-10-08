@@ -49,12 +49,12 @@ const Contact = () => {
             subtext: "Phone Address",
             delay: "100",
         },
-        // {
-        //     icon: Mail,
-        //     text: "info@meskotdigitals.com",
-        //     subtext: "We reply within 24 hours",
-        //     delay: "150",
-        // },
+        {
+            icon: Mail,
+            text: "info@meskotdigitals.com",
+            subtext: "We reply within 24 hours",
+            delay: "150",
+        },
     ];
 
     return (
@@ -131,7 +131,7 @@ const Contact = () => {
                                 </div>
 
                                 {/* Social Links */}
-                                <div data-aos="fade-right" data-aos-delay="200">
+                                {/* <div data-aos="fade-right" data-aos-delay="200">
                                     <h3 className="text-xl font-semibold text-white mb-4">
                                         Follow Us
                                     </h3>
@@ -150,7 +150,7 @@ const Contact = () => {
                                             );
                                         })}
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
 
                             {/* Contact Form & Subscribe */}

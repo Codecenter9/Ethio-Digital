@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('blog_id');
             $table->string('name');
             $table->text('comment');
-            $table->boolean('status')->default(false);
+            $table->enum('status', ['approved', 'pending', 'rejected', 'spam'])->default('pending');
             $table->timestamps();
         });
     }

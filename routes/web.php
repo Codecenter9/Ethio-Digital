@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\CommentStatusController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EmailController;
 use App\Http\Controllers\Admin\ProjectController;
@@ -52,7 +53,12 @@ Route::middleware(['auth'])
         });
         Route::controller(EmailController::class)->group(function () {
             Route::get('/emails', 'index')->name('emails');
-            // Route::post("/emails/store", "store")->name("emails.store");
+            Route::post("/emails/{emailId}/update-status", "updateemailstatus")->name("emails.markasread");
+        });
+        Route::controller(CommentStatusController::class)->group(function () {
+            Route::get('/comments', 'index')->name('comments');
+            Route::post("/handle-comment-status/{commentId}", "handleStatus")->name("Comments.change_update");
+            Route::delete("/delete-comment/{commentId}", "destroy")->name("Comments.destroy");
         });
     });
 

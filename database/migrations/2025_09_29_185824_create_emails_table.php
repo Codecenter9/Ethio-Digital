@@ -13,10 +13,12 @@ return new class extends Migration
     {
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->nullable();
             $table->string('email');
             $table->string('subject');
             $table->text('message');
+            $table->enum('type', ['sent', 'inbox'])->default('inbox');
+            $table->enum('status', ['seen', 'unseen'])->default('unseen');
             $table->timestamps();
         });
     }

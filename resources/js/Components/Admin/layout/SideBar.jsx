@@ -11,9 +11,9 @@ import {
     ChevronFirst,
     ChevronLast,
     ChevronDown,
-    ChevronRight,
     Globe,
     Mail,
+    MessageCircle,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -21,6 +21,7 @@ const mainLinks = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
     { href: "/admin/reports", label: "Reports", icon: BarChart3 },
     { href: "/admin/emails", label: "Emails", icon: Mail },
+    { href: "/admin/comments", label: "Comments", icon: MessageCircle },
     { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 

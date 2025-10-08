@@ -29,7 +29,6 @@ class PageController extends Controller
     {
         $teams = User::all()->map(function ($user) {
             $user->limited_details = Str::limit($user->details, 100);
-            $user->profile_url = asset('storage/' . $user->profile_photo);
             return $user;
         });
 
@@ -41,12 +40,6 @@ class PageController extends Controller
     public function singleteam($slug)
     {
         $teamMember = User::where("slug", $slug)->firstOrFail();
-
-        if ($teamMember->profile_photo && Storage::disk('public')->exists($teamMember->profile_photo)) {
-            $teamMember->profile_url = asset('storage/' . $teamMember->profile_photo);
-        } else {
-            $teamMember->profile_url = null;
-        }
 
         return Inertia::render("Client/SingleTeam", compact("teamMember"));
     }
@@ -75,7 +68,7 @@ class PageController extends Controller
 
     public function singlenew($slug)
     {
-        $comments = Comment::where('status', false)->get();
+        $comments = Comment::where('status', 'approved')->get();
         return Inertia::render('Client/SingleNew', [
             'slug' => $slug,
             'comments' => $comments,

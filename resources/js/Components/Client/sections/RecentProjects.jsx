@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from "react";
 import SectionHeading from "../Layout/SectionHeading";
 import { ArrowRight } from "lucide-react";
-import { Link } from "@inertiajs/react";
 import ProjectCTA from "../cards/ProjectCTA";
 
 const RecentProjects = ({ projects }) => {

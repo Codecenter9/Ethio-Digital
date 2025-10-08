@@ -17,10 +17,27 @@ export default function Topbar({ onMenuClick }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
     const buttonRef = useRef(null);
+    const [memberPhoto, setMemberPhoto] = useState(
+        "/images/teams/default-avatar.webp"
+    );
 
     // Get auth user from Inertia props
     const { auth } = usePage().props;
     const user = auth?.user || {};
+
+    useEffect(() => {
+        let photo = "/images/teams/default-avatar.webp";
+
+        if (user.email === "juhar@meskotdigitals.com") {
+            photo = "/images/teams/juhar.webp";
+        } else if (user.email === "ebisa@gmail.com") {
+            photo = "/images/teams/image2.webp";
+        } else if (user.email === "lidet@gmail.com") {
+            photo = "/images/teams/lidet.webp";
+        }
+
+        setMemberPhoto(photo);
+    }, [user]);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -138,11 +155,7 @@ export default function Topbar({ onMenuClick }) {
                                 aria-expanded={isDropdownOpen}
                             >
                                 <img
-                                    src={
-                                        user.profile_photo
-                                            ? `/storage/${user.profile_photo}`
-                                            : "/images/teams.webp"
-                                    }
+                                    src={memberPhoto}
                                     loading="lazy"
                                     alt={user.name || "User avatar"}
                                     className="w-10 h-10 rounded-2xl border-2 border-transparent hover:border-indigo-500 transition-colors"

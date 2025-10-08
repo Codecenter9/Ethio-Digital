@@ -1,11 +1,17 @@
 import DashboardLayout from "@/Layouts/DashboardLayout/Dashboard";
+import { Head } from "@inertiajs/react";
 import React from "react";
 
 const Dashboard = () => {
     return (
-        <div>
-            <h1>hello</h1>
-        </div>
+        <>
+            <Head>
+                <title>Dashboard</title>
+            </Head>
+            <div>
+                <h1>hello</h1>
+            </div>
+        </>
     );
 };
 

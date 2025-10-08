@@ -53,6 +53,7 @@ class TeamsController extends Controller
             'details'       => 'nullable|string',
             'experience'    => 'nullable|string|max:255',
             'projects'      => 'nullable|string|max:255',
+            'telegram' => 'nullable|string|max:255',
         ]);
 
         $member->name     = $validated['name'];
@@ -63,6 +64,7 @@ class TeamsController extends Controller
         $member->details  = $validated['details'] ?? $member->details;
         $member->experience = $validated['experience'] ?? $member->experience;
         $member->projects   = $validated['projects'] ?? $member->projects;
+        $member->telegramlink = $validated['telegram'] ??  $member->telegramlink;
 
         if (!empty($validated['password'])) {
             $member->password = bcrypt($validated['password']);

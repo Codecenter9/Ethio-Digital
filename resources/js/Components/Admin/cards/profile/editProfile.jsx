@@ -2,17 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import { Head, useForm } from "@inertiajs/react";
 import {
     X,
-    Camera,
     Save,
     Shield,
     MapPin,
     Briefcase,
     FolderGit2,
-    User,
     Eye,
     EyeOff,
     CheckCircle,
     AlertCircle,
+    Send,
 } from "lucide-react";
 import EditProfilePhoto from "./editPhoto";
 
@@ -29,6 +28,7 @@ const EditProfile = ({ isOpen, onClose, user, errors: pageErrors, flash }) => {
         details: user?.details || "",
         experience: user?.experience || "",
         projects: user?.projects || "",
+        telegram: user?.telegramlink || "",
     });
 
     // Handle outside click
@@ -70,6 +70,7 @@ const EditProfile = ({ isOpen, onClose, user, errors: pageErrors, flash }) => {
                 details: user?.details || "",
                 experience: user?.experience || "",
                 projects: user?.projects || "",
+                telegram: user?.telegramlink || "",
             });
         }
     }, [user, isOpen]);
@@ -79,6 +80,20 @@ const EditProfile = ({ isOpen, onClose, user, errors: pageErrors, flash }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setData(name, value);
+    };
+
+    const handleTelegramChange = (e) => {
+        let value = e.target.value;
+        value = value.replace(/^(t\.me\/|@)/, "");
+        setData("telegram", value);
+    };
+
+    const getTelegramDisplayValue = () => {
+        if (!data.telegram) return "";
+        return data.telegram.startsWith("t.me/") ||
+            data.telegram.startsWith("@")
+            ? data.telegram
+            : `t.me/${data.telegram}`;
     };
 
     const handleSubmit = (e) => {
@@ -186,7 +201,7 @@ const EditProfile = ({ isOpen, onClose, user, errors: pageErrors, flash }) => {
                                         )}
                                     </div>
 
-                                    {/* Email */}
+                                    {/* Email - Readonly */}
                                     <div className="w-full">
                                         <label className="block text-sm font-medium text-gray-300 mb-2">
                                             Email Address *
@@ -195,20 +210,12 @@ const EditProfile = ({ isOpen, onClose, user, errors: pageErrors, flash }) => {
                                             type="email"
                                             name="email"
                                             value={data.email}
-                                            onChange={handleInputChange}
-                                            disabled={processing}
-                                            className={`w-full px-4 py-3 rounded-xl ${
-                                                allErrors.email
-                                                    ? "border border-red-300 dark:border-red-700"
-                                                    : "border-none"
-                                            } bg-gray-800/30 text-white focus:ring-1 focus:ring-purple-500 focus:border-transparent disabled:opacity-50`}
+                                            readOnly
+                                            className="w-full px-4 py-3 rounded-xl border-none bg-gray-800/30 text-gray-400 cursor-not-allowed"
                                         />
-                                        {allErrors.email && (
-                                            <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
-                                                <AlertCircle size={12} />
-                                                {allErrors.email}
-                                            </p>
-                                        )}
+                                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                            Email cannot be changed
+                                        </p>
                                     </div>
                                 </div>
                                 <div className="flex flex-row w-full gap-5">
@@ -288,6 +295,44 @@ const EditProfile = ({ isOpen, onClose, user, errors: pageErrors, flash }) => {
                                             </p>
                                         )}
                                     </div>
+                                </div>
+
+                                {/* Telegram Field */}
+                                <div className="w-full">
+                                    <label className="block text-sm font-medium text-gray-300 mb-2 flex items-center gap-2">
+                                        <Send size={16} />
+                                        Telegram Username
+                                    </label>
+                                    <div className="relative">
+                                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span className="text-gray-400">
+                                                t.me/
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="telegram"
+                                            value={data.telegram}
+                                            onChange={handleTelegramChange}
+                                            disabled={processing}
+                                            className={`w-full px-4 py-3 rounded-xl pl-20 ${
+                                                allErrors.telegram
+                                                    ? "border border-red-300 dark:border-red-700"
+                                                    : "border-none"
+                                            } bg-gray-800/30 text-white focus:ring-1 focus:ring-purple-500 focus:border-transparent disabled:opacity-50`}
+                                            placeholder="username"
+                                        />
+                                    </div>
+                                    {allErrors.telegram && (
+                                        <p className="text-red-500 text-xs mt-1 flex items-center gap-1">
+                                            <AlertCircle size={12} />
+                                            {allErrors.telegram}
+                                        </p>
+                                    )}
+                                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                                        Enter only your Telegram username
+                                        (without t.me/)
+                                    </p>
                                 </div>
                             </div>
 

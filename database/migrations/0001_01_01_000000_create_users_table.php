@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string("experience")->nullable();
             $table->text("details")->nullable();
             $table->string("status")->default("active");
+            $table->string("telegramlink")->nullable();
             $table->string("profile_photo")->nullable();
             $table->rememberToken();
             $table->timestamps();

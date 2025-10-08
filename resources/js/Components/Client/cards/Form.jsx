@@ -1,14 +1,25 @@
 import { useForm } from "@inertiajs/react";
 import { Send, Clock, CheckCircle, AlertCircle } from "lucide-react";
+import { useRef } from "react";
 
 const ContactForm = ({ layout = "home" }) => {
-    const { data, setData, post, processing, errors, recentlySuccessful } =
-        useForm({
-            name: "",
-            email: "",
-            subject: "",
-            message: "",
-        });
+    const formRef = useRef(null);
+    const subscribeFormRef = useRef(null);
+
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors,
+        recentlySuccessful,
+        reset,
+    } = useForm({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+    });
 
     const {
         data: subData,
@@ -17,6 +28,7 @@ const ContactForm = ({ layout = "home" }) => {
         processing: subProcessing,
         errors: subErrors,
         recentlySuccessful: subSuccess,
+        reset: resetSub,
     } = useForm({
         email: "",
     });
@@ -24,6 +36,7 @@ const ContactForm = ({ layout = "home" }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         post("/emails/send", {
+            preserveScroll: true,
             onSuccess: () => {
                 reset();
             },
@@ -33,14 +46,15 @@ const ContactForm = ({ layout = "home" }) => {
     const handleSubscribe = (e) => {
         e.preventDefault();
         subPost("/subscribe", {
+            preserveScroll: true,
             onSuccess: () => {
-                reset("email");
+                resetSub();
             },
         });
     };
 
     return (
-        <div className={`${(layout = "home" ? " max-w-6xl mx-auto" : "")}`}>
+        <div className={`${layout === "home" ? "max-w-6xl mx-auto" : ""}`}>
             {/* Contact Form */}
             <div
                 data-aos="fade-left"
@@ -65,7 +79,11 @@ const ContactForm = ({ layout = "home" }) => {
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form
+                    ref={formRef}
+                    onSubmit={handleSubmit}
+                    className="space-y-6"
+                >
                     {/* name + email */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
@@ -157,8 +175,9 @@ const ContactForm = ({ layout = "home" }) => {
             <div
                 data-aos="fade-left"
                 data-aos-delay="100"
-                className={`bg-gradient-to-br from-gray-900/40 to-purple-900/20 rounded-2xl p-8 border border-purple-500/20 shadow-2xl mt-6 ${(layout =
-                    "home" ? " hidden" : "")}`}
+                className={`bg-gradient-to-br from-gray-900/40 to-purple-900/20 rounded-2xl p-8 border border-purple-500/20 shadow-2xl mt-6 ${
+                    layout === "home" ? "hidden" : ""
+                }`}
             >
                 <div className="flex items-center gap-3 mb-4">
                     <Clock className="w-5 h-5 text-purple-400" />
@@ -180,7 +199,11 @@ const ContactForm = ({ layout = "home" }) => {
                         </span>
                     </div>
                 ) : (
-                    <form onSubmit={handleSubscribe} className="flex gap-3">
+                    <form
+                        ref={subscribeFormRef}
+                        onSubmit={handleSubscribe}
+                        className="flex gap-3"
+                    >
                         <input
                             type="email"
                             name="email"

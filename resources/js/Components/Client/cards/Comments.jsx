@@ -82,7 +82,6 @@ const Comments = ({ blog_id, comments }) => {
             preserveScroll: true,
             onSuccess: () => {
                 reset();
-                // Small delay to ensure DOM is updated
                 setTimeout(() => {
                     commentsEndRef.current?.scrollIntoView({
                         behavior: "smooth",
