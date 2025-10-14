@@ -10,36 +10,25 @@ export default function About() {
     const meta = {
         title: "About Us | Meskot Digital Solutions",
         description:
-            "Learn more about Meskot Digital Solutions — a creative and technology-driven company specializing in software development, digital marketing, graphics design, social media management, and content creation. Discover our story, mission, and the team behind your digital growth.",
+            "Discover Meskot Digital Solutions — Ethiopia's innovative software development and digital marketing company. Learn about our mission, services, and the team driving your digital growth.",
         keywords:
-            "Meskot Digital Solutions, about Meskot Digital, software development company Ethiopia, digital marketing Ethiopia, graphics design, social media management, content creation, tech company Ethiopia",
-        url: "https://meskotdigital.com/about",
-        image: "https://meskotdigital.com/about-og.jpg",
+            "Meskot Digital Solutions, software development Ethiopia, digital marketing Ethiopia, graphics design Ethiopia, social media management, content creation, tech company Ethiopia",
+        url: "https://meskotdigitals.com/about",
     };
 
     return (
         <>
             <Head>
+                {/* Primary Meta Tags */}
                 <title>{meta.title}</title>
                 <meta name="description" content={meta.description} />
                 <meta name="keywords" content={meta.keywords} />
+                <link rel="canonical" href={meta.url} />
 
-                {/* Open Graph */}
+                {/* Open Graph / Facebook / LinkedIn */}
+                <meta property="og:url" content={meta.url} />
                 <meta property="og:title" content={meta.title} />
                 <meta property="og:description" content={meta.description} />
-                <meta property="og:type" content="website" />
-                <meta
-                    property="og:site_name"
-                    content="Meskot Digital Solutions"
-                />
-                <meta property="og:url" content={meta.url} />
-                <meta property="og:image" content={meta.image} />
-
-                {/* Twitter Card */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={meta.title} />
-                <meta name="twitter:description" content={meta.description} />
-                <meta name="twitter:image" content={meta.image} />
             </Head>
 
             <main className="relative">

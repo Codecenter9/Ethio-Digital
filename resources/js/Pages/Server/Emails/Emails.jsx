@@ -1,24 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import {
     Search,
     MoreVertical,
-    Star,
     Trash2,
     Mail,
     User,
     EyeOff,
-    Paperclip,
     Trash,
     ArrowLeft,
     Clock,
     Reply,
     Forward,
-    Eye,
     Circle,
 } from "lucide-react";
 import DashboardLayout from "@/Layouts/DashboardLayout/Dashboard";
 import SharedTitle from "@/Components/Admin/layout/SharedTitle";
 import { Head, router } from "@inertiajs/react";
+import DeleteModal from "@/Components/Admin/cards/modal/DeleteModal";
+import EmailDetailView from "@/Components/Admin/cards/emails/EmailDetailView";
 
 const Emails = ({ emails = [] }) => {
     const [selectedEmails, setSelectedEmails] = useState([]);
@@ -26,9 +25,9 @@ const Emails = ({ emails = [] }) => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedEmail, setSelectedEmail] = useState(null);
     const [detailView, setDetailView] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    // Calculate counts based on email type and status
-    const getCategoryCounts = () => {
+    const categoryCounts = useMemo(() => {
         const inboxCount = emails.filter(
             (email) => email.type === "inbox"
         ).length;
@@ -43,237 +42,169 @@ const Emails = ({ emails = [] }) => {
         ).length;
 
         return { inboxCount, sentCount, spamCount, trashCount };
-    };
+    }, [emails]);
 
-    const { inboxCount, sentCount, spamCount, trashCount } =
-        getCategoryCounts();
+    const { inboxCount, sentCount, spamCount, trashCount } = categoryCounts;
 
-    const categories = [
-        {
-            id: "inbox",
-            name: "Inbox",
-            count: inboxCount,
-            icon: Mail,
-        },
-        {
-            id: "sent",
-            name: "Sent",
-            count: sentCount,
-            icon: User,
-        },
-        {
-            id: "spam",
-            name: "Spam",
-            count: spamCount,
-            icon: EyeOff,
-        },
-        {
-            id: "trash",
-            name: "Trash",
-            count: trashCount,
-            icon: Trash,
-        },
-    ];
+    const categories = useMemo(
+        () => [
+            {
+                id: "inbox",
+                name: "Inbox",
+                count: inboxCount,
+                icon: Mail,
+            },
+            {
+                id: "sent",
+                name: "Sent",
+                count: sentCount,
+                icon: User,
+            },
+            {
+                id: "spam",
+                name: "Spam",
+                count: spamCount,
+                icon: EyeOff,
+            },
+            {
+                id: "trash",
+                name: "Trash",
+                count: trashCount,
+                icon: Trash,
+            },
+        ],
+        [inboxCount, sentCount, spamCount, trashCount]
+    );
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const now = new Date();
-        const diffTime = Math.abs(now - date);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const formatDate = useCallback((dateString) => {
+        if (!dateString) return "Unknown date";
 
-        if (diffDays === 1) return "Yesterday";
-        if (diffDays < 7) return `${diffDays}d ago`;
-        if (diffDays < 30) return `${Math.ceil(diffDays / 7)}w ago`;
-        return date.toLocaleDateString();
-    };
+        try {
+            const date = new Date(dateString);
+            if (isNaN(date.getTime())) return "Invalid date";
 
-    const toggleEmailSelection = (emailId) => {
+            const now = new Date();
+            const diffTime = Math.abs(now - date);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 1) return "Yesterday";
+            if (diffDays < 7) return `${diffDays}d ago`;
+            if (diffDays < 30) return `${Math.ceil(diffDays / 7)}w ago`;
+            return date.toLocaleDateString();
+        } catch (error) {
+            console.error("Error formatting date:", error);
+            return "Invalid date";
+        }
+    }, []);
+
+    const toggleEmailSelection = useCallback((emailId) => {
         setSelectedEmails((prev) =>
             prev.includes(emailId)
                 ? prev.filter((id) => id !== emailId)
                 : [...prev, emailId]
         );
-    };
+    }, []);
 
-    const toggleSelectAll = () => {
+    const filteredEmails = useMemo(() => {
+        return emails.filter((email) => {
+            if (activeCategory === "inbox" && email.type !== "inbox")
+                return false;
+            if (activeCategory === "sent" && email.type !== "sent")
+                return false;
+            if (activeCategory === "spam" && email.status !== "spam")
+                return false;
+            if (activeCategory === "trash" && email.status !== "trash")
+                return false;
+
+            if (searchQuery.trim()) {
+                const query = searchQuery.toLowerCase().trim();
+                return (
+                    email.subject?.toLowerCase().includes(query) ||
+                    email.message?.toLowerCase().includes(query) ||
+                    email.name?.toLowerCase().includes(query) ||
+                    email.email?.toLowerCase().includes(query)
+                );
+            }
+
+            return true;
+        });
+    }, [emails, activeCategory, searchQuery]);
+
+    const toggleSelectAll = useCallback(() => {
         setSelectedEmails((prev) =>
             prev.length === filteredEmails.length
                 ? []
                 : filteredEmails.map((email) => email.id)
         );
-    };
+    }, [filteredEmails]);
 
-    // Filter emails based on active category and search
-    const filteredEmails = emails.filter((email) => {
-        // Filter by category/type
-        if (activeCategory === "inbox" && email.type !== "inbox") return false;
-        if (activeCategory === "sent" && email.type !== "sent") return false;
-        if (activeCategory === "spam" && email.status !== "spam") return false;
-        if (activeCategory === "trash" && email.status !== "trash")
-            return false;
+    const handleEmailStatus = useCallback((emailId) => {
+        if (!emailId) return;
 
-        // Filter by search query
-        if (searchQuery) {
-            const query = searchQuery.toLowerCase();
-            return (
-                email.subject?.toLowerCase().includes(query) ||
-                email.from_name?.toLowerCase().includes(query) ||
-                email.to_email?.toLowerCase().includes(query) ||
-                email.message?.toLowerCase().includes(query)
-            );
-        }
-
-        return true;
-    });
-
-    // Handle email actions
-    const handleEmailStatus = (emailId) => {
         router.post(
             `/admin/emails/${emailId}/update-status`,
             {},
-            {
-                preserveScroll: true,
-            }
+            { preserveScroll: true }
         );
-    };
+    }, []);
 
-    const handleDeleteEmail = (emailId) => {
-        if (confirm("Are you sure you want to delete this email?")) {
-            router.delete(`/admin/emails/${emailId}`, {
+    const handleDeleteEmail = useCallback((emailId) => {
+        if (!emailId) return;
+
+        router.post(
+            `/admin/delete-emails/${emailId}`,
+            {},
+            {
                 preserveScroll: true,
                 onSuccess: () => {
                     setSelectedEmail(null);
                     setDetailView(false);
+                    setSelectedEmails((prev) =>
+                        prev.filter((id) => id !== emailId)
+                    );
                 },
-            });
-        }
-    };
-
-    const handleMoveToSpam = (emailId) => {
-        router.post(
-            `/admin/emails/${emailId}/move-to-spam`,
-            {},
-            {
-                preserveScroll: true,
             }
         );
-    };
+    }, []);
 
-    // Toggle detail view
-    const toggleDetailView = (email) => {
-        setSelectedEmail(email);
-        setDetailView(true);
+    const confirmBulkDelete = useCallback(() => {
+        if (selectedEmails.length === 0) return;
+        setShowDeleteModal(true);
+    }, [selectedEmails.length]);
 
-        // Mark as seen when opening if it's unseen
-        if (email.status === "unseen") {
-            handleEmailStatus(email.id);
-        }
-    };
+    const handleBulkDelete = useCallback(() => {
+        if (selectedEmails.length === 0) return;
 
-    const closeDetailView = () => {
+        selectedEmails.forEach((id) => {
+            router.post(
+                `/admin/delete-emails/${id}`,
+                {},
+                { preserveScroll: true }
+            );
+        });
+        setSelectedEmails([]);
         setDetailView(false);
         setSelectedEmail(null);
-    };
+    }, [selectedEmails]);
 
-    // Email Detail View Component
-    const EmailDetailView = ({ email, onClose }) => {
-        if (!email) return null;
+    const toggleDetailView = useCallback(
+        (email) => {
+            if (!email) return;
 
-        return (
-            <div className="h-full flex flex-col">
-                {/* Header */}
-                <div className="flex items-center justify-between p-4 border-b border-gray-700">
-                    <div className="flex items-center gap-4">
-                        <button
-                            onClick={onClose}
-                            className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-                        >
-                            <ArrowLeft className="w-5 h-5 text-gray-300" />
-                        </button>
-                        <div>
-                            <h2 className="text-lg font-semibold text-white">
-                                {email.subject}
-                            </h2>
-                            <div className="flex items-center gap-2 text-sm text-gray-400">
-                                <span>{formatDate(email.created_at)}</span>
-                                {email.status === "unseen" && (
-                                    <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded-full">
-                                        New
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <button
-                            onClick={() => handleMoveToSpam(email.id)}
-                            className="p-2 hover:bg-gray-700 rounded-lg transition-colors text-gray-300"
-                            title="Mark as spam"
-                        >
-                            <EyeOff className="w-5 h-5" />
-                        </button>
-                        <button
-                            onClick={() => handleDeleteEmail(email.id)}
-                            className="p-2 hover:bg-red-900 rounded-lg transition-colors text-red-400"
-                            title="Delete email"
-                        >
-                            <Trash2 className="w-5 h-5" />
-                        </button>
-                    </div>
-                </div>
+            setSelectedEmail(email);
+            setDetailView(true);
 
-                {/* Email Content */}
-                <div className="flex-1 py-10 overflow-y-auto p-6">
-                    {/* Sender Info */}
-                    <div className="flex items-start justify-between mb-6">
-                        <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-lg">
-                                {email.name?.charAt(0) || "U"}
-                            </div>
-                            <div>
-                                <div className="flex items-center gap-2">
-                                    <h3 className="text-lg font-semibold text-white">
-                                        {email.name}
-                                    </h3>
-                                    {email.status === "unseen" && (
-                                        <Circle className="w-3 h-3 fill-blue-500 text-blue-500 animate-pulse" />
-                                    )}
-                                </div>
-                                <p className="text-gray-400">{email.email}</p>
-                            </div>
-                        </div>
-                        <div className="text-right text-sm text-gray-400">
-                            <div className="flex items-center gap-1">
-                                <Clock className="w-4 h-4" />
-                                {new Date(email.created_at).toLocaleString()}
-                            </div>
-                        </div>
-                    </div>
+            if (email.status === "unseen") {
+                handleEmailStatus(email.id);
+            }
+        },
+        [handleEmailStatus]
+    );
 
-                    {/* Email Body */}
-                    <div className="prose prose-invert max-w-none">
-                        <div className="bg-gray-800/50 rounded-lg p-6 border border-gray-700">
-                            <p className="text-gray-300 whitespace-pre-wrap leading-relaxed">
-                                {email.message}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex items-center gap-3 p-4 border-t border-gray-700 bg-gray-900/50">
-                    <button className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                        <Reply className="w-4 h-4" />
-                        Reply
-                    </button>
-                    <button className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-600 transition-colors">
-                        <Forward className="w-4 h-4" />
-                        Forward
-                    </button>
-                </div>
-            </div>
-        );
-    };
+    const closeDetailView = useCallback(() => {
+        setDetailView(false);
+        setSelectedEmail(null);
+    }, []);
 
     return (
         <>
@@ -283,6 +214,7 @@ const Emails = ({ emails = [] }) => {
             <div className="min-h-max flex items-center justify-center py-8">
                 <div className="w-full max-w-6xl space-y-6">
                     <SharedTitle title="Manage Emails" />
+
                     {emails.length > 0 ? (
                         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
                             {/* Sidebar */}
@@ -334,7 +266,7 @@ const Emails = ({ emails = [] }) => {
                                                         </span>
                                                     </div>
                                                     <span
-                                                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                                        className={`px-2 py-1 rounded-full text-xs font-medium min-w-8 text-center ${
                                                             isActive
                                                                 ? "bg-blue-800 text-blue-300"
                                                                 : "bg-gray-600 text-gray-400"
@@ -356,6 +288,10 @@ const Emails = ({ emails = [] }) => {
                                         <EmailDetailView
                                             email={selectedEmail}
                                             onClose={closeDetailView}
+                                            setSelectedEmail={setSelectedEmail}
+                                            setShowDeleteModal={
+                                                setShowDeleteModal
+                                            }
                                         />
                                     ) : (
                                         <>
@@ -366,38 +302,34 @@ const Emails = ({ emails = [] }) => {
                                                         <input
                                                             type="checkbox"
                                                             checked={
-                                                                selectedEmails.length ===
-                                                                    filteredEmails.length &&
                                                                 filteredEmails.length >
-                                                                    0
+                                                                    0 &&
+                                                                selectedEmails.length ===
+                                                                    filteredEmails.length
                                                             }
                                                             onChange={
                                                                 toggleSelectAll
                                                             }
-                                                            className="rounded border-gray-600 bg-gray-700 text-blue-600 focus:ring-blue-500"
+                                                            disabled={
+                                                                filteredEmails.length ===
+                                                                0
+                                                            }
+                                                            className="rounded border-gray-600 bg-gray-700 text-blue-600 focus:ring-blue-500 disabled:opacity-50"
                                                         />
                                                     </label>
                                                     <div className="flex items-center gap-2">
                                                         {selectedEmails.length >
                                                             0 && (
-                                                            <>
-                                                                <button
-                                                                    onClick={() =>
-                                                                        selectedEmails.forEach(
-                                                                            (
-                                                                                id
-                                                                            ) =>
-                                                                                handleDeleteEmail(
-                                                                                    id
-                                                                                )
-                                                                        )
-                                                                    }
-                                                                    className="p-2 hover:bg-red-900 rounded-lg transition-colors text-red-400"
-                                                                    title="Delete selected"
-                                                                >
-                                                                    <Trash2 className="w-5 h-5" />
-                                                                </button>
-                                                            </>
+                                                            <button
+                                                                onClick={
+                                                                    confirmBulkDelete
+                                                                }
+                                                                className="p-2 hover:bg-red-900 rounded-lg transition-colors text-red-400"
+                                                                title="Delete selected"
+                                                                aria-label="Delete selected emails"
+                                                            >
+                                                                <Trash2 className="w-5 h-5" />
+                                                            </button>
                                                         )}
                                                     </div>
                                                 </div>
@@ -412,7 +344,7 @@ const Emails = ({ emails = [] }) => {
                                             </div>
 
                                             {/* Email List */}
-                                            <div className="divide-y divide-gray-700 py-3 max-h-[480px] overflow-y-auto">
+                                            <div className="divide-y divide-gray-700 max-h-[480px] overflow-y-auto">
                                                 {filteredEmails.length === 0 ? (
                                                     <div className="text-center py-12">
                                                         <Mail
@@ -425,7 +357,16 @@ const Emails = ({ emails = [] }) => {
                                                         <p className="text-gray-400">
                                                             {searchQuery
                                                                 ? "Try adjusting your search terms"
-                                                                : `No emails in ${activeCategory}`}
+                                                                : `No emails in ${
+                                                                      categories.find(
+                                                                          (
+                                                                              cat
+                                                                          ) =>
+                                                                              cat.id ===
+                                                                              activeCategory
+                                                                      )?.name ||
+                                                                      activeCategory
+                                                                  }`}
                                                         </p>
                                                     </div>
                                                 ) : (
@@ -453,7 +394,7 @@ const Emails = ({ emails = [] }) => {
                                                             >
                                                                 {/* Checkbox */}
                                                                 <label
-                                                                    className="flex items-start mt-1"
+                                                                    className="flex items-start mt-1 flex-shrink-0"
                                                                     onClick={(
                                                                         e
                                                                     ) =>
@@ -477,7 +418,7 @@ const Emails = ({ emails = [] }) => {
                                                                 {/* Unseen Indicator */}
                                                                 {email.status ===
                                                                     "unseen" && (
-                                                                    <div className="flex items-center mt-1">
+                                                                    <div className="flex items-center mt-1 flex-shrink-0">
                                                                         <Circle className="w-3 h-3 fill-blue-500 text-blue-500" />
                                                                     </div>
                                                                 )}
@@ -495,12 +436,15 @@ const Emails = ({ emails = [] }) => {
                                                                         >
                                                                             {email.type ===
                                                                             "sent"
-                                                                                ? email.email
-                                                                                : email.from_name}
+                                                                                ? email.to_email ||
+                                                                                  "Unknown Recipient"
+                                                                                : email.from_name ||
+                                                                                  email.name ||
+                                                                                  "Unknown Sender"}
                                                                         </span>
                                                                         {email.status ===
                                                                             "unseen" && (
-                                                                            <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded-full font-medium">
+                                                                            <span className="px-2 py-1 bg-blue-500 text-white text-xs rounded-full font-medium flex-shrink-0">
                                                                                 New
                                                                             </span>
                                                                         )}
@@ -514,9 +458,8 @@ const Emails = ({ emails = [] }) => {
                                                                                     : "text-gray-400"
                                                                             }`}
                                                                         >
-                                                                            {
-                                                                                email.subject
-                                                                            }
+                                                                            {email.subject ||
+                                                                                "No Subject"}
                                                                         </span>
                                                                     </div>
                                                                     <p
@@ -530,7 +473,8 @@ const Emails = ({ emails = [] }) => {
                                                                         {email.message?.substring(
                                                                             0,
                                                                             100
-                                                                        )}
+                                                                        ) ||
+                                                                            "No message content"}
                                                                         {email
                                                                             .message
                                                                             ?.length >
@@ -554,13 +498,14 @@ const Emails = ({ emails = [] }) => {
                                                                         )}
                                                                     </span>
                                                                     <button
-                                                                        className="p-1 hover:bg-gray-600 rounded transition-colors text-gray-400 opacity-0 group-hover:opacity-100"
+                                                                        className="p-1 hover:bg-gray-600 rounded transition-colors text-gray-400 opacity-0 group-hover:opacity-100 flex-shrink-0"
                                                                         onClick={(
                                                                             e
                                                                         ) => {
                                                                             e.stopPropagation();
                                                                             // Show more actions
                                                                         }}
+                                                                        aria-label="More options"
                                                                     >
                                                                         <MoreVertical
                                                                             size={
@@ -576,21 +521,30 @@ const Emails = ({ emails = [] }) => {
                                             </div>
 
                                             {/* Footer */}
-                                            <div className="flex items-center justify-between p-4 border-t border-gray-700">
-                                                <span className="text-sm text-gray-400">
-                                                    Showing{" "}
-                                                    {filteredEmails.length} of{" "}
-                                                    {emails.length} emails
-                                                </span>
-                                                <div className="flex items-center gap-2">
-                                                    <button className="px-3 py-1 border border-gray-600 rounded-lg hover:bg-gray-700 transition-colors text-sm text-gray-300">
-                                                        Previous
-                                                    </button>
-                                                    <button className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm">
-                                                        Next
-                                                    </button>
+                                            {filteredEmails.length > 0 && (
+                                                <div className="flex items-center justify-between p-4 border-t border-gray-700">
+                                                    <span className="text-sm text-gray-400">
+                                                        Showing{" "}
+                                                        {filteredEmails.length}{" "}
+                                                        of {emails.length}{" "}
+                                                        emails
+                                                    </span>
+                                                    <div className="flex items-center gap-2">
+                                                        <button
+                                                            className="px-3 py-1 border border-gray-600 rounded-lg hover:bg-gray-700 transition-colors text-sm text-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                            disabled
+                                                        >
+                                                            Previous
+                                                        </button>
+                                                        <button
+                                                            className="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                                                            disabled
+                                                        >
+                                                            Next
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            )}
                                         </>
                                     )}
                                 </div>
@@ -613,10 +567,31 @@ const Emails = ({ emails = [] }) => {
                     )}
                 </div>
             </div>
+
+            <DeleteModal
+                isOpen={showDeleteModal}
+                onClose={() => setShowDeleteModal(false)}
+                onConfirm={() => {
+                    if (selectedEmail) {
+                        handleDeleteEmail(selectedEmail);
+                    } else {
+                        handleBulkDelete();
+                    }
+                    setShowDeleteModal(false);
+                }}
+                title={
+                    selectedEmail ? "Delete Email" : "Delete Selected Emails"
+                }
+                message={
+                    selectedEmail
+                        ? "Are you sure you want to delete this email? This action cannot be undone."
+                        : `Are you sure you want to delete ${selectedEmails.length} selected emails? This action cannot be undone.`
+                }
+            />
         </>
     );
 };
 
-export default Emails;
-
 Emails.layout = (page) => <DashboardLayout children={page} />;
+
+export default Emails;

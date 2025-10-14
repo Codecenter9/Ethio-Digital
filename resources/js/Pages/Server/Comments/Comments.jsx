@@ -8,7 +8,10 @@ import {
     Trash,
     MoreVertical,
     Calendar,
-    X,
+    CheckCircle,
+    XCircle,
+    AlertCircle,
+    Clock,
 } from "lucide-react";
 import ViewComment from "./ViewComment";
 
@@ -17,26 +20,27 @@ const Comments = ({ comments = [] }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(null);
     const [selectedComment, setSelectedComment] = useState(null);
     const [viewModal, setViewModal] = useState(false);
-    const [dropdownPosition, setDropdownPosition] = useState({});
+    const [dropdownPositions, setDropdownPositions] = useState({});
     const statusButtonRefs = useRef({});
     const mobileButtonRefs = useRef({});
+    const dropdownRefs = useRef({});
 
     // Calculate dropdown position based on available space
-    const calculateDropdownPosition = (
-        buttonRef,
-        dropdownWidth = 192,
-        dropdownHeight = 160
-    ) => {
-        if (!buttonRef.current) return "bottom-right";
+    const calculateDropdownPosition = (buttonRef, dropdownId) => {
+        if (!buttonRef?.current)
+            return { top: 0, left: 0, position: "bottom-right" };
 
         const rect = buttonRef.current.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         const viewportWidth = window.innerWidth;
 
+        const dropdownWidth = 192;
+        const dropdownHeight = 160;
+
         const spaceBelow = viewportHeight - rect.bottom;
         const spaceAbove = rect.top;
-        const spaceRight = viewportWidth - rect.left;
-        const spaceLeft = rect.right;
+        const spaceRight = viewportWidth - rect.right;
+        const spaceLeft = rect.left;
 
         // Determine vertical position
         const verticalPosition =
@@ -50,32 +54,68 @@ const Comments = ({ comments = [] }) => {
                 ? "left"
                 : "right";
 
-        return `${verticalPosition}-${horizontalPosition}`;
+        let top, left;
+
+        if (verticalPosition === "bottom") {
+            top = rect.bottom + window.scrollY + 4;
+        } else {
+            top = rect.top + window.scrollY - dropdownHeight - 4;
+        }
+
+        if (horizontalPosition === "left") {
+            left = rect.left + window.scrollX;
+        } else {
+            left = rect.right + window.scrollX - dropdownWidth;
+        }
+
+        // Ensure dropdown stays within viewport bounds
+        left = Math.max(8, Math.min(left, viewportWidth - dropdownWidth - 8));
+        top = Math.max(8, Math.min(top, viewportHeight - dropdownHeight - 8));
+
+        return {
+            top,
+            left,
+            position: `${verticalPosition}-${horizontalPosition}`,
+        };
     };
 
     const StatusBadge = ({ status, comment }) => {
-        const statusColors = {
-            pending:
-                "bg-yellow-100 text-yellow-800 border border-yellow-200 hover:bg-yellow-200 cursor-pointer",
-            approved:
-                "bg-green-100 text-green-800 border border-green-200 hover:bg-green-200 cursor-pointer",
-            rejected:
-                "bg-red-100 text-red-800 border border-red-200 hover:bg-red-200 cursor-pointer",
-            spam: "bg-gray-100 text-gray-800 border border-gray-200 hover:bg-gray-200 cursor-pointer",
+        const statusConfig = {
+            pending: {
+                class: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
+                icon: Clock,
+            },
+            approved: {
+                class: "bg-green-500/20 text-green-300 border-green-500/30",
+                icon: CheckCircle,
+            },
+            rejected: {
+                class: "bg-red-500/20 text-red-300 border-red-500/30",
+                icon: XCircle,
+            },
+            spam: {
+                class: "bg-gray-500/20 text-gray-300 border-gray-500/30",
+                icon: AlertCircle,
+            },
         };
 
-        const badgeClass =
-            statusColors[status?.toLowerCase()] || statusColors.pending;
+        const config =
+            statusConfig[status?.toLowerCase()] || statusConfig.pending;
+        const IconComponent = config.icon;
 
         return (
             <div className="relative">
                 <button
-                    ref={(el) => (statusButtonRefs.current[comment.id] = el)}
-                    onClick={() => {
-                        const position = calculateDropdownPosition({
-                            current: statusButtonRefs.current[comment.id],
-                        });
-                        setDropdownPosition((prev) => ({
+                    ref={(el) => {
+                        statusButtonRefs.current[comment.id] = el;
+                    }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        const position = calculateDropdownPosition(
+                            { current: statusButtonRefs.current[comment.id] },
+                            comment.id
+                        );
+                        setDropdownPositions((prev) => ({
                             ...prev,
                             [comment.id]: position,
                         }));
@@ -83,10 +123,15 @@ const Comments = ({ comments = [] }) => {
                             activeDropdown === comment.id ? null : comment.id
                         );
                     }}
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium capitalize transition-colors duration-200 ${badgeClass}`}
+                    className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium capitalize transition-all duration-200 border ${config.class} hover:scale-105 hover:shadow-lg`}
                 >
+                    <IconComponent className="w-3 h-3 mr-1.5" />
                     {status || "pending"}
-                    <ChevronDown className="w-3 h-3 ml-1" />
+                    <ChevronDown
+                        className={`w-3 h-3 ml-1 transition-transform duration-200 ${
+                            activeDropdown === comment.id ? "rotate-180" : ""
+                        }`}
+                    />
                 </button>
             </div>
         );
@@ -120,64 +165,63 @@ const Comments = ({ comments = [] }) => {
     // Status dropdown component
     const StatusDropdown = ({ comment }) => {
         const isOpen = activeDropdown === comment.id;
-        const position = dropdownPosition[comment.id] || "bottom-right";
+        const position = dropdownPositions[comment.id] || { top: 0, left: 0 };
 
         const statusOptions = [
             {
                 value: "approved",
                 label: "Approve",
-                color: "text-green-600",
-                icon: "✓",
+                color: "text-green-400 hover:bg-green-500/10",
+                icon: CheckCircle,
             },
             {
                 value: "rejected",
                 label: "Reject",
-                color: "text-red-600",
-                icon: "✗",
+                color: "text-red-400 hover:bg-red-500/10",
+                icon: XCircle,
             },
             {
                 value: "spam",
                 label: "Mark as Spam",
-                color: "text-gray-600",
-                icon: "⚠",
+                color: "text-gray-400 hover:bg-gray-500/10",
+                icon: AlertCircle,
             },
             {
                 value: "pending",
                 label: "Set to Pending",
-                color: "text-yellow-600",
-                icon: "⏳",
+                color: "text-yellow-400 hover:bg-yellow-500/10",
+                icon: Clock,
             },
         ];
 
-        // Position classes based on calculated position
-        const getPositionClasses = () => {
-            const classes = {
-                "top-left": "bottom-full left-0 mb-1 origin-bottom-left",
-                "top-right": "bottom-full right-0 mb-1 origin-bottom-right",
-                "bottom-left": "top-full left-0 mt-1 origin-top-left",
-                "bottom-right": "top-full right-0 mt-1 origin-top-right",
-            };
-            return classes[position] || classes["bottom-right"];
-        };
+        if (!isOpen) return null;
 
         return (
-            isOpen && (
-                <>
-                    {/* Backdrop */}
-                    <div
-                        className="fixed inset-0 z-40"
-                        onClick={() => setActiveDropdown(null)}
-                    />
+            <>
+                {/* Backdrop */}
+                <div
+                    className="fixed inset-0 z-40"
+                    onClick={() => setActiveDropdown(null)}
+                />
 
-                    {/* Dropdown menu */}
-                    <div
-                        className={`absolute z-50 w-48 bg-white border border-gray-200 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 overflow-hidden ${getPositionClasses()}`}
-                    >
-                        <div className="py-1">
-                            <div className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase border-b border-gray-100">
-                                Change Status
-                            </div>
-                            {statusOptions.map((option) => (
+                {/* Dropdown menu */}
+                <div
+                    ref={(el) => {
+                        dropdownRefs.current[comment.id] = el;
+                    }}
+                    className="fixed z-50 w-48 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl ring-1 ring-black ring-opacity-50 overflow-hidden backdrop-blur-sm"
+                    style={{
+                        top: `${position.top}px`,
+                        left: `${position.left}px`,
+                    }}
+                >
+                    <div className="py-2">
+                        <div className="px-3 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider border-b border-gray-700">
+                            Change Status
+                        </div>
+                        {statusOptions.map((option) => {
+                            const IconComponent = option.icon;
+                            return (
                                 <button
                                     key={option.value}
                                     onClick={() =>
@@ -186,18 +230,16 @@ const Comments = ({ comments = [] }) => {
                                             option.value
                                         )
                                     }
-                                    className={`flex items-center w-full px-3 py-2 text-sm ${option.color} hover:bg-gray-50 transition-colors duration-150`}
+                                    className={`flex items-center w-full px-3 py-2.5 text-sm ${option.color} transition-all duration-150 hover:scale-105 hover:shadow-md`}
                                 >
-                                    <span className="w-4 mr-2 font-bold">
-                                        {option.icon}
-                                    </span>
+                                    <IconComponent className="w-4 h-4 mr-3" />
                                     {option.label}
                                 </button>
-                            ))}
-                        </div>
+                            );
+                        })}
                     </div>
-                </>
-            )
+                </div>
+            </>
         );
     };
 
@@ -217,9 +259,8 @@ const Comments = ({ comments = [] }) => {
     const MobileActionsMenu = ({ comment }) => {
         const isOpen = mobileMenuOpen === comment.id;
 
-        // Calculate mobile menu position
-        const getMobileMenuPosition = () => {
-            if (!mobileButtonRefs.current[comment.id]) return "right-0";
+        const calculateMobileMenuPosition = () => {
+            if (!mobileButtonRefs.current[comment.id]) return { right: 0 };
 
             const rect =
                 mobileButtonRefs.current[comment.id].getBoundingClientRect();
@@ -229,18 +270,21 @@ const Comments = ({ comments = [] }) => {
             const spaceLeft = rect.left;
 
             return spaceRight >= 192 || spaceRight >= spaceLeft
-                ? "right-0"
-                : "left-0";
+                ? { right: viewportWidth - rect.right, top: rect.bottom + 4 }
+                : { left: rect.left, top: rect.bottom + 4 };
         };
+
+        const position = calculateMobileMenuPosition();
 
         return (
             <div className="relative md:hidden">
                 <button
                     ref={(el) => (mobileButtonRefs.current[comment.id] = el)}
-                    onClick={() =>
-                        setMobileMenuOpen(isOpen ? null : comment.id)
-                    }
-                    className="p-2 text-gray-400 hover:text-gray-300 transition-colors duration-200"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setMobileMenuOpen(isOpen ? null : comment.id);
+                    }}
+                    className="p-2 text-gray-400 hover:text-white transition-all duration-200 hover:bg-gray-700 rounded-lg"
                 >
                     <MoreVertical className="w-4 h-4" />
                 </button>
@@ -252,22 +296,23 @@ const Comments = ({ comments = [] }) => {
                             onClick={() => setMobileMenuOpen(null)}
                         />
                         <div
-                            className={`absolute z-50 w-48 mt-1 origin-top-right bg-gray-800 border border-gray-700 rounded-lg shadow-lg overflow-hidden ${getMobileMenuPosition()}`}
+                            className="fixed z-50 w-48 bg-gray-800 border border-gray-700 rounded-xl shadow-2xl overflow-hidden backdrop-blur-sm"
+                            style={position}
                         >
-                            <div className="py-1">
+                            <div className="py-2">
                                 <button
                                     onClick={() => handleView(comment)}
-                                    className="flex items-center w-full px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 transition-colors duration-150"
+                                    className="flex items-center w-full px-3 py-2.5 text-sm text-gray-300 hover:bg-blue-500/10 hover:text-blue-300 transition-all duration-150"
                                 >
-                                    <Eye className="w-4 h-4 mr-2" />
+                                    <Eye className="w-4 h-4 mr-3" />
                                     View Comment
                                 </button>
                                 <button
                                     onClick={() => handleDelete(comment.id)}
-                                    className="flex items-center w-full px-3 py-2 text-sm text-red-400 hover:bg-gray-700 transition-colors duration-150"
+                                    className="flex items-center w-full px-3 py-2.5 text-sm text-red-400 hover:bg-red-500/10 hover:text-red-300 transition-all duration-150"
                                 >
-                                    <Trash className="w-4 h-4 mr-2" />
-                                    Delete
+                                    <Trash className="w-4 h-4 mr-3" />
+                                    Delete Comment
                                 </button>
                             </div>
                         </div>
@@ -279,17 +324,17 @@ const Comments = ({ comments = [] }) => {
 
     // Desktop Action Buttons
     const DesktopActionButtons = ({ comment }) => (
-        <div className="hidden md:flex items-center space-x-3">
+        <div className="hidden md:flex items-center space-x-2">
             <button
                 onClick={() => handleView(comment)}
-                className="inline-flex items-center px-3 gap-2 py-2 text-sm font-medium text-gray-300 bg-gray-800 border border-gray-700 rounded-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors duration-200"
+                className="inline-flex items-center px-3 gap-2 py-2 text-sm font-medium text-gray-300 bg-blue-500/20 border border-blue-500/30 rounded-lg hover:bg-blue-500/30 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
             >
                 <Eye className="w-4 h-4" />
                 View
             </button>
             <button
                 onClick={() => handleDelete(comment.id)}
-                className="inline-flex items-center px-3 gap-2 py-2 text-sm font-medium text-gray-300 bg-red-900/50 border border-red-700 rounded-lg hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200"
+                className="inline-flex items-center px-3 gap-2 py-2 text-sm font-medium text-red-300 bg-red-500/20 border border-red-500/30 rounded-lg hover:bg-red-500/30 hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             >
                 <Trash className="w-4 h-4" />
                 Delete
@@ -303,7 +348,13 @@ const Comments = ({ comments = [] }) => {
             // Close status dropdowns
             if (activeDropdown) {
                 const button = statusButtonRefs.current[activeDropdown];
-                if (button && !button.contains(event.target)) {
+                const dropdown = dropdownRefs.current[activeDropdown];
+                if (
+                    button &&
+                    !button.contains(event.target) &&
+                    dropdown &&
+                    !dropdown.contains(event.target)
+                ) {
                     setActiveDropdown(null);
                 }
             }
@@ -318,10 +369,43 @@ const Comments = ({ comments = [] }) => {
         };
 
         document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("scroll", () => {
+            setActiveDropdown(null);
+            setMobileMenuOpen(null);
+        });
+
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("scroll", () => {
+                setActiveDropdown(null);
+                setMobileMenuOpen(null);
+            });
         };
     }, [activeDropdown, mobileMenuOpen]);
+
+    // Update dropdown positions on scroll and resize
+    useEffect(() => {
+        const updateDropdownPositions = () => {
+            if (activeDropdown) {
+                const position = calculateDropdownPosition(
+                    { current: statusButtonRefs.current[activeDropdown] },
+                    activeDropdown
+                );
+                setDropdownPositions((prev) => ({
+                    ...prev,
+                    [activeDropdown]: position,
+                }));
+            }
+        };
+
+        window.addEventListener("resize", updateDropdownPositions);
+        window.addEventListener("scroll", updateDropdownPositions);
+
+        return () => {
+            window.removeEventListener("resize", updateDropdownPositions);
+            window.removeEventListener("scroll", updateDropdownPositions);
+        };
+    }, [activeDropdown]);
 
     return (
         <>
@@ -340,33 +424,59 @@ const Comments = ({ comments = [] }) => {
                     <div className="w-full max-w-6xl space-y-6">
                         <SharedTitle title="Comments Management" />
 
-                        {/* Mobile Stats */}
-                        <div className="grid grid-cols-2 gap-4 md:hidden mb-6">
+                        {/* Stats Cards */}
+                        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
                             <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-4 text-white shadow-lg">
-                                <div className="text-xl font-bold">
+                                <div className="text-2xl font-bold">
                                     {comments.length}
                                 </div>
-                                <div className="text-blue-100 text-xs">
-                                    Total
+                                <div className="text-blue-100 text-sm">
+                                    Total Comments
                                 </div>
                             </div>
                             <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-4 text-white shadow-lg">
-                                <div className="text-xl font-bold">
+                                <div className="text-2xl font-bold">
                                     {
                                         comments.filter(
                                             (c) => c.status === "approved"
                                         ).length
                                     }
                                 </div>
-                                <div className="text-green-100 text-xs">
+                                <div className="text-green-100 text-sm">
                                     Approved
+                                </div>
+                            </div>
+                            <div className="bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl p-4 text-white shadow-lg">
+                                <div className="text-2xl font-bold">
+                                    {
+                                        comments.filter(
+                                            (c) => c.status === "pending"
+                                        ).length
+                                    }
+                                </div>
+                                <div className="text-yellow-100 text-sm">
+                                    Pending
+                                </div>
+                            </div>
+                            <div className="bg-gradient-to-br from-red-500 to-red-600 rounded-xl p-4 text-white shadow-lg">
+                                <div className="text-2xl font-bold">
+                                    {
+                                        comments.filter(
+                                            (c) =>
+                                                c.status === "rejected" ||
+                                                c.status === "spam"
+                                        ).length
+                                    }
+                                </div>
+                                <div className="text-red-100 text-sm">
+                                    Rejected/Spam
                                 </div>
                             </div>
                         </div>
 
-                        <div className="bg-gradient-to-br overflow-x-auto scrollbar-hide from-gray-900 to-gray-800 rounded-2xl shadow-lg border border-gray-700 p-4 md:p-6">
+                        <div className="bg-gradient-to-br overflow-x-auto scrollbar-hide from-gray-900 to-gray-800 rounded-2xl shadow-xl border border-gray-700 p-4 md:p-6">
                             {comments.length > 0 ? (
-                                <div className=" ">
+                                <div className="relative">
                                     <table className="min-w-full divide-y divide-gray-700">
                                         <thead className="hidden md:table-header-group">
                                             <tr>
@@ -392,14 +502,14 @@ const Comments = ({ comments = [] }) => {
                                             {comments.map((comment) => (
                                                 <tr
                                                     key={comment.id}
-                                                    className="hover:bg-gray-900/50 transition-colors duration-150"
+                                                    className="hover:bg-gray-900/50 transition-colors duration-150 group"
                                                 >
                                                     {/* Commenter - Mobile & Desktop */}
                                                     <td className="py-4 pl-4 pr-3 md:pl-6 md:pr-3">
                                                         <div className="flex items-center">
                                                             <div className="flex-shrink-0 h-10 w-10 md:h-12 md:w-12">
                                                                 <img
-                                                                    className="h-10 w-10 md:h-12 md:w-12 rounded-full border-2 border-gray-700"
+                                                                    className="h-10 w-10 md:h-12 md:w-12 rounded-full border-2 border-gray-600 group-hover:border-gray-500 transition-colors"
                                                                     src={`https://ui-avatars.com/api/?name=${encodeURIComponent(
                                                                         comment.name ||
                                                                             "User"

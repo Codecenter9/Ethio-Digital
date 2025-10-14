@@ -1,5 +1,5 @@
 import React from "react";
-import { Facebook, Twitter, Linkedin } from "lucide-react";
+import { Send } from "lucide-react";
 import { Link } from "@inertiajs/react";
 
 const Footer = () => {
@@ -100,23 +100,41 @@ const Footer = () => {
                     <h3 className="text-lg font-semibold text-white mb-4">
                         Contact Us
                     </h3>
-                    <p className="text-sm text-gray-400 leading-relaxed">
-                        Addis Ababa, Ethiopia <br />
-                        Phone: +251982648798 <br />
-                        Email: juharendrishu@gmail.com
-                    </p>
+                    <span className="flex flex-col gap-1 text-sm text-gray-400 leading-relaxed">
+                        <p> Addis Ababa, Ethiopia</p>
+                        <p>
+                            Phone:{" "}
+                            <a
+                                target="_blank"
+                                href="tel:+251903171819"
+                                className="text-blue-500"
+                            >
+                                +251903171819
+                            </a>
+                        </p>
+                        <p>
+                            Email:{" "}
+                            <a
+                                target="_blank"
+                                href="mailto:info@meskotdigitals.com"
+                                className="text-blue-500"
+                            >
+                                info@meskotdigitals.com
+                            </a>
+                        </p>
+                    </span>
 
                     {/* Social Media Icons */}
                     <div className="flex space-x-4 mt-4">
                         <a
-                            href="https://facebook.com"
+                            href="https://t.me/Meskotdigitals"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 transition-all hover:bg-blue-600 hover:scale-110"
                         >
-                            <Facebook size={20} className="text-white" />
+                            <Send size={20} className="text-white" />
                         </a>
-                        <a
+                        {/* <a
                             href="https://twitter.com"
                             target="_blank"
                             rel="noopener noreferrer"
@@ -131,7 +149,7 @@ const Footer = () => {
                             className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-800 transition-all hover:bg-blue-300 hover:scale-110"
                         >
                             <Linkedin size={20} className="text-white" />
-                        </a>
+                        </a> */}
                     </div>
                 </div>
             </div>

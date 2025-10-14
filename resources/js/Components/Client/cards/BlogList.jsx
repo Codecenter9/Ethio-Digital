@@ -1,14 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-    Heart,
-    MessageCircle,
-    Search,
-    Calendar,
-    User,
-    ArrowRight,
-    Filter,
-} from "lucide-react";
-import { Dropdown } from "@/Components/Client/Layout/DropDown";
+import { Search, Calendar, User, ArrowRight } from "lucide-react";
 import { Link } from "@inertiajs/react";
 import blogs from "@/Components/data/blogs";
 
@@ -42,9 +33,9 @@ export default function BlogList() {
             <div className="grid gap-8 grid-cols-1 md:grid-cols-4">
                 {/* Main Content */}
                 <div className="lg:col-span-3">
-                    {/* Search + Filter for Mobile */}
-                    <div className="flex flex-row gap-3 items-center md:hidden mb-6">
-                        <div className="relative w-full md:w-64">
+                    {/* Search + Category Filter for Mobile */}
+                    <div className="flex flex-col gap-3 md:hidden mb-6">
+                        <div className="relative w-full">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
                             <input
                                 id="search-mobile"
@@ -56,13 +47,22 @@ export default function BlogList() {
                             />
                         </div>
 
-                        <Dropdown
-                            filterIcon={Filter}
-                            title="Filter"
-                            options={categories}
-                            selected={activeCategory}
-                            onSelect={(cat) => setActiveCategory(cat)}
-                        />
+                        {/* Mobile Category Filter - Horizontal Scroll */}
+                        <div className="flex gap-2 overflow-x-auto pb-2">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat}
+                                    onClick={() => setActiveCategory(cat)}
+                                    className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
+                                        activeCategory === cat
+                                            ? "bg-purple-600 text-white"
+                                            : "bg-gray-700/50 text-gray-300 hover:bg-gray-600/50"
+                                    }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     {/* Blogs Grid */}
@@ -140,26 +140,6 @@ export default function BlogList() {
                                                 </div>
 
                                                 <footer className="flex items-center justify-between">
-                                                    {/* <div className="flex items-center gap-4 text-gray-400">
-                                                        <div className="flex items-center gap-2 text-sm text-gray-300">
-                                                            <Heart className="w-5 h-5 text-pink-500" />
-                                                            <span>
-                                                                {blog.likes}
-                                                            </span>
-                                                        </div>
-
-                                                        <div className="flex items-center gap-1">
-                                                            <MessageCircle className="w-4 h-4" />
-                                                            <span>
-                                                                {blog.comments ||
-                                                                    0}
-                                                            </span>
-                                                        </div>
-                                                        <span>
-                                                            {blog.readTime}
-                                                        </span>
-                                                    </div> */}
-
                                                     <Link
                                                         href={`/news/${blog.slug}`}
                                                         className="inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors font-medium"

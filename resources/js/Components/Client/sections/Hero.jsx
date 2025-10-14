@@ -18,7 +18,7 @@ export default function Hero() {
 
     return (
         <section
-            className="relative min-h-max md:min-h-screen pt-20 md:pt-24 py-12 w-full flex flex-col items-center justify-center antialiased"
+            className="relative min-h-max md:min-h-screen pt-20 md:pt-24 py-16 w-full flex flex-col items-center justify-center antialiased"
             aria-label="Hero Section"
         >
             <Spotlight />
@@ -59,9 +59,9 @@ export default function Hero() {
                     data-aos-delay="150"
                     className="mt-6 text-xl md:text-2xl text-neutral-300 max-w-2xl font-light"
                 >
-                    We specialize in software development,
-                    digital marketing, graphics design, social media management,
-                    and content creation to help businesses thrive online.
+                    We specialize in software development, digital marketing,
+                    graphics design, social media management, and content
+                    creation to help businesses thrive online.
                 </p>
 
                 <div className="mt-10 flex flex-col md:flex-row items-center gap-6">

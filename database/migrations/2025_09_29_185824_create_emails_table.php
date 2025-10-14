@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('email');
+            $table->string('phone')->nullable();
             $table->string('subject');
             $table->text('message');
-            $table->enum('type', ['sent', 'inbox'])->default('inbox');
+            $table->enum('type', ['sent', 'inbox', 'spam'])->default('inbox');
             $table->enum('status', ['seen', 'unseen'])->default('unseen');
             $table->timestamps();
         });

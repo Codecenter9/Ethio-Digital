@@ -24,7 +24,7 @@ const MissionAndVision = () => {
             className="py-12 md:py-24 px-6 md:px-12"
             aria-label="Mission and Vision"
         >
-            <div className="max-w-6xl mx-auto">
+            <div className="max-w-full mx-auto">
                 {/* Heading */}
                 <div className="text-start mb-16">
                     <div
@@ -60,15 +60,21 @@ const MissionAndVision = () => {
                     <div
                         data-aos="fade-right"
                         data-aos-delay="50"
-                        className="bg-gradient-to-br from-blue-900/10 to-gray-950 rounded-2xl p-8 relative overflow-hidden group hover:shadow-2xl transition-all duration-500"
+                        className="bg-gradient-to-br from-gray-900 to-blue-900/30 rounded-2xl p-8 relative overflow-hidden group hover:shadow-2xl transition-all duration-500 border border-gray-200 dark:border-gray-800"
                     >
+                        {/* Subtle background pattern */}
+                        <div className="absolute inset-0 opacity-5 dark:opacity-10">
+                            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-transparent via-gray-800"></div>
+                        </div>
+
+                        {/* Reduced intensity for the accent glow */}
                         <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-blue-500/20 rounded-full blur-xl group-hover:bg-purple-500/30 transition-all duration-700"></div>
 
                         <div className="flex items-center gap-3 mb-8 relative z-10">
                             <div className="p-3 bg-gradient-to-br from-pink-500 to-purple-600 rounded-xl shadow-lg">
                                 <Target className="w-8 h-8 text-white" />
                             </div>
-                            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-400 to-purple-400">
+                            <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-600 dark:from-pink-400 dark:to-purple-400">
                                 Our Mission
                             </h2>
                         </div>
@@ -77,10 +83,10 @@ const MissionAndVision = () => {
                             {missions.map((mission, idx) => (
                                 <li
                                     key={idx}
-                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-100/10 dark:hover:bg-gray-700/50 transition-all duration-300"
+                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-all duration-300 border border-transparent hover:border-gray-700"
                                 >
-                                    <CheckCircle2 className="w-5 h-5 text-green-400 mt-1 flex-shrink-0" />
-                                    <span className="text-gray-700 dark:text-gray-300">
+                                    <CheckCircle2 className="w-5 h-5 text-green-500 dark:text-green-400 mt-1 flex-shrink-0" />
+                                    <span className="text-gray-800 dark:text-gray-200 leading-relaxed">
                                         {mission}
                                     </span>
                                 </li>
@@ -113,7 +119,7 @@ const MissionAndVision = () => {
                     <div
                         data-aos="fade-left"
                         data-aos-delay="50"
-                        className="bg-gradient-to-bl from-blue-900/10 to-gray-950 rounded-2xl p-8 relative overflow-hidden group hover:shadow-2xl transition-all duration-500"
+                        className="bg-gradient-to-br from-gray-900 to-blue-900/30  rounded-2xl p-8 relative overflow-hidden group hover:shadow-2xl transition-all duration-500"
                     >
                         <div className="absolute -bottom-10 -right-10 w-28 h-28 bg-blue-500/20 rounded-full blur-xl group-hover:bg-blue-500/30 transition-all duration-700"></div>
 
@@ -130,7 +136,7 @@ const MissionAndVision = () => {
                             {visions.map((vision, idx) => (
                                 <li
                                     key={idx}
-                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-100/10 dark:hover:bg-gray-700/50 transition-all duration-300"
+                                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-800/50 transition-all duration-300 border border-transparent hover:border-gray-700"
                                 >
                                     <CheckCircle2 className="w-5 h-5 text-pink-400 mt-1 flex-shrink-0" />
                                     <span className="text-gray-700 dark:text-gray-300">

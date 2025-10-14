@@ -10,6 +10,7 @@ import {
     Youtube,
     Github,
     MessageCircle,
+    Send,
 } from "lucide-react";
 import { Link, Head } from "@inertiajs/react";
 import ClientLayout from "@/Layouts/ClientLayout/ClientLayout";
@@ -22,8 +23,7 @@ const Contact = () => {
             "Get in touch with Meskot Digital Solutions for software development, design, and digital services. Reach us for inquiries, collaborations, and support.",
         keywords:
             "Meskot Digital Solutions contact, software company Ethiopia, digital services support, tech collaboration Ethiopia, software inquiries",
-        url: "https://meskotdigitalsolutions.com/contact",
-        image: "https://meskotdigitalsolutions.com/images/contact-cover.jpg",
+        url: "https://meskotdigitals.com/contact",
     };
 
     const socialLinks = [
@@ -33,13 +33,13 @@ const Contact = () => {
         // { icon: Instagram, href: "#", label: "Instagram" },
         // { icon: Youtube, href: "#", label: "YouTube" },
         // { icon: Github, href: "#", label: "GitHub" },
-        // { icon: MessageCircle, href: "#", label: "Messenger" },
+        { icon: Send, href: "https://t.me/Meskotdigitals", label: "Messenger" },
     ];
 
     const contactDetails = [
         {
             icon: MapPin,
-            text: "Addis Ababa, Ethiopia",
+            text: "Addis Ababa, Dembel Square",
             subtext: "Our Headquarters",
             delay: "50",
         },
@@ -60,22 +60,16 @@ const Contact = () => {
     return (
         <>
             <Head>
+                {/* Primary Meta Tags */}
                 <title>{meta.title}</title>
                 <meta name="description" content={meta.description} />
                 <meta name="keywords" content={meta.keywords} />
+                <link rel="canonical" href={meta.url} />
+
+                {/* Open Graph / Facebook / LinkedIn */}
+                <meta property="og:url" content={meta.url} />
                 <meta property="og:title" content={meta.title} />
                 <meta property="og:description" content={meta.description} />
-                <meta property="og:type" content="website" />
-                <meta
-                    property="og:site_name"
-                    content="Meskot Digital Solutions"
-                />
-                <meta property="og:url" content={meta.url} />
-                <meta property="og:image" content={meta.image} />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={meta.title} />
-                <meta name="twitter:description" content={meta.description} />
-                <meta name="twitter:image" content={meta.image} />
             </Head>
 
             <main className="bg-gray-950 text-gray-100 min-h-screen">
@@ -131,26 +125,27 @@ const Contact = () => {
                                 </div>
 
                                 {/* Social Links */}
-                                {/* <div data-aos="fade-right" data-aos-delay="200">
+                                <div data-aos="fade-right" data-aos-delay="200">
                                     <h3 className="text-xl font-semibold text-white mb-4">
-                                        Follow Us
+                                        Get Us
                                     </h3>
                                     <div className="flex flex-wrap gap-3">
                                         {socialLinks.map((social, index) => {
                                             const Icon = social.icon;
                                             return (
-                                                <Link
+                                                <a
+                                                    target="_blank"
                                                     key={index}
                                                     href={social.href}
                                                     className="group p-3 bg-gray-900/50 rounded-xl border border-gray-800 hover:border-pink-500 hover:bg-pink-500/10 transition-all duration-300"
                                                     aria-label={social.label}
                                                 >
                                                     <Icon className="w-5 h-5 text-gray-400 group-hover:text-pink-400 transition-colors" />
-                                                </Link>
+                                                </a>
                                             );
                                         })}
                                     </div>
-                                </div> */}
+                                </div>
                             </div>
 
                             {/* Contact Form & Subscribe */}

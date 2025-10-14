@@ -10,10 +10,10 @@ const Teams = ({ teams }) => {
         const updatedTeams = (teams || []).map((member) => {
             let photo = null;
 
-            if (member.email === "juhar@meskotdigitals.com") {
+            if (member.email === "juharendrishu@gmail.com") {
                 photo = "/images/teams/juhar.webp";
-            } else if (member.email === "ebisa@gmail.com") {
-                photo = "/images/teams/image2.webp";
+            } else if (member.email === "ebisaasmera6@gmail.com") {
+                photo = "/images/teams/ebisa.webp";
             } else if (member.email === "lidet@gmail.com") {
                 photo = "/images/teams/lidet.webp";
             } else {
@@ -32,29 +32,22 @@ const Teams = ({ teams }) => {
             "Meet the creative minds behind Meskot Digital Solutions. Our talented team of developers, designers, marketers, and content creators work together to deliver powerful digital solutions for businesses.",
         keywords:
             "Meskot Digital Solutions team, software developers Ethiopia, digital marketing experts, creative designers, social media managers, content creators, tech company Ethiopia",
-        url: "https://meskotdigital.com/teams",
-        image: "https://meskotdigital.com/teams-og.jpg",
+        url: "https://meskotdigitals.com/teams",
     };
 
     return (
         <>
             <Head>
+                {/* Primary Meta Tags */}
                 <title>{meta.title}</title>
                 <meta name="description" content={meta.description} />
                 <meta name="keywords" content={meta.keywords} />
+                <link rel="canonical" href={meta.url} />
+
+                {/* Open Graph / Facebook / LinkedIn */}
+                <meta property="og:url" content={meta.url} />
                 <meta property="og:title" content={meta.title} />
                 <meta property="og:description" content={meta.description} />
-                <meta property="og:type" content="website" />
-                <meta
-                    property="og:site_name"
-                    content="Meskot Digital Solutions"
-                />
-                <meta property="og:url" content={meta.url} />
-                <meta property="og:image" content={meta.image} />
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={meta.title} />
-                <meta name="twitter:description" content={meta.description} />
-                <meta name="twitter:image" content={meta.image} />
             </Head>
 
             <main className="bg-gray-950 min-h-screen">

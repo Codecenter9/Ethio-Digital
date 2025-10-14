@@ -20,33 +20,22 @@ export default function Home() {
             "Meskot Digital Solutions is your trusted partner for digital growth. We specialize in software development, web & mobile apps, digital marketing, graphics design, social media management, and content creation to help businesses thrive online.",
         keywords:
             "Meskot Digital Solutions, software development, web development, mobile apps, digital marketing, SEO, social media management, content creation, graphics design, branding, Ethiopia tech company",
-        url: "https://meskotdigital.com",
-        image: "https://meskotdigital.com/og-image.jpg",
+        url: "https://meskotdigitals.com",
     };
 
     return (
         <ClientLayout>
             <Head>
+                {/* Page-specific Meta Tags */}
                 <title>{meta.title}</title>
                 <meta name="description" content={meta.description} />
                 <meta name="keywords" content={meta.keywords} />
+                <link rel="canonical" href={meta.url} />
 
-                {/* Open Graph */}
+                {/* Open Graph / Facebook / LinkedIn */}
+                <meta property="og:url" content={meta.url} />
                 <meta property="og:title" content={meta.title} />
                 <meta property="og:description" content={meta.description} />
-                <meta property="og:type" content="website" />
-                <meta
-                    property="og:site_name"
-                    content="Meskot Digital Solutions"
-                />
-                <meta property="og:url" content={meta.url} />
-                <meta property="og:image" content={meta.image} />
-
-                {/* Twitter Card */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={meta.title} />
-                <meta name="twitter:description" content={meta.description} />
-                <meta name="twitter:image" content={meta.image} />
             </Head>
 
             <div className="relative bg-gray-950/9 text-white">
@@ -56,7 +45,7 @@ export default function Home() {
                 <Features />
                 <ProductTimeline />
                 {projects.length > 0 && <RecentProjects projects={projects} />}
-                <Testimonials />
+                {/* <Testimonials /> */}
                 {blogs.length > 0 && <Blogs blogs={blogs} />}
                 <div className="py-16">
                     <ContactForm layout="home" />

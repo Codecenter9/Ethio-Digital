@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\TeamsController;
 use App\Http\Controllers\Client\CommentController;
 use App\Http\Controllers\Client\PageController;
+use App\Http\Controllers\Client\SubscriberController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -26,6 +27,7 @@ Route::get('/news', [PageController::class, 'news'])->name('client.news');
 Route::get('/news/{slug}', [PageController::class, 'singlenew'])->name('client.singlenew');
 Route::post('/emails/send', [PageController::class, 'store'])->name('emails.store');
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::post('/subscribe', [SubscriberController::class, 'subscribe'])->name('comments.subscribe');
 
 
 Route::middleware(['auth'])
@@ -33,7 +35,7 @@ Route::middleware(['auth'])
     ->as('admin.')
     ->group(function () {
         Route::controller(DashboardController::class)->group(function () {
-            Route::get('/', 'index')->name('dashboard');
+            Route::get('/dashboard', 'index')->name('dashboard');
         });
         Route::controller(ProjectController::class)->group(function () {
             Route::get('/projects', 'index')->name('projects');
@@ -54,6 +56,7 @@ Route::middleware(['auth'])
         Route::controller(EmailController::class)->group(function () {
             Route::get('/emails', 'index')->name('emails');
             Route::post("/emails/{emailId}/update-status", "updateemailstatus")->name("emails.markasread");
+            Route::post("/delete-emails/{emailId}", "deleteemails")->name("emails.delete");
         });
         Route::controller(CommentStatusController::class)->group(function () {
             Route::get('/comments', 'index')->name('comments');

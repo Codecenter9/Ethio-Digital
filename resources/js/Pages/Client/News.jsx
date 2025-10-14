@@ -11,35 +11,23 @@ export default function BlogPage() {
             "Stay updated with the latest insights, news, and digital trends from Meskot Digital Solutions. Discover tips on technology, design, and innovation.",
         keywords:
             "Meskot Digital Solutions blog, tech blogs Ethiopia, digital marketing tips, software development insights, design trends, innovation updates",
-        url: "https://meskotdigitalsolutions.com/blogs",
-        image: "https://meskotdigitalsolutions.com/images/blog-cover.jpg",
+        url: "https://meskotdigitals.com/news",
     };
 
     return (
         <>
             {" "}
-            {/* SEO Meta Tags */}
             <Head>
+                {/* Primary Meta Tags */}
                 <title>{meta.title}</title>
                 <meta name="description" content={meta.description} />
                 <meta name="keywords" content={meta.keywords} />
+                <link rel="canonical" href={meta.url} />
 
-                {/* Open Graph */}
+                {/* Open Graph / Facebook / LinkedIn */}
+                <meta property="og:url" content={meta.url} />
                 <meta property="og:title" content={meta.title} />
                 <meta property="og:description" content={meta.description} />
-                <meta property="og:type" content="website" />
-                <meta
-                    property="og:site_name"
-                    content="Meskot Digital Solutions"
-                />
-                <meta property="og:url" content={meta.url} />
-                <meta property="og:image" content={meta.image} />
-
-                {/* Twitter Card */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={meta.title} />
-                <meta name="twitter:description" content={meta.description} />
-                <meta name="twitter:image" content={meta.image} />
             </Head>
             <main className="bg-gray-950 text-gray-100">
                 <SharedHero

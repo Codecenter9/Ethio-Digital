@@ -19,9 +19,9 @@ import { useState, useEffect, useRef } from "react";
 
 const mainLinks = [
     { href: "/admin/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { href: "/admin/reports", label: "Reports", icon: BarChart3 },
     { href: "/admin/emails", label: "Emails", icon: Mail },
     { href: "/admin/comments", label: "Comments", icon: MessageCircle },
+    { href: "/admin/reports", label: "Reports", icon: BarChart3 },
     { href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
@@ -43,9 +43,6 @@ export default function Sidebar({
     const [isFrontendOpen, setIsFrontendOpen] = useState(false);
     const dropdownRef = useRef(null);
 
-    const { auth } = usePage().props;
-    const user = auth?.user || {};
-
     useEffect(() => {
         const currentPath = url.split("?")[0]; // Remove query params
         const isActiveFrontend = frontendLinks.some((link) =>
@@ -53,6 +50,12 @@ export default function Sidebar({
         );
         setIsFrontendOpen(isActiveFrontend);
     }, [url]);
+
+    const { auth } = usePage().props;
+    const user = auth?.user || {};
+
+    // Check if user has access to frontend components
+    const hasFrontendAccess = user?.email === "juharendrishu@gmail.com";
 
     const isActiveLink = (href) => {
         const currentPath = url.split("?")[0];
@@ -133,7 +136,7 @@ export default function Sidebar({
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
-                                            className={`relative flex items-center p-3 rounded-xl transition-all duration-200 group border ${
+                                            className={`relative flex items-center p-3 rounded-xl transition-all duration-200 group border z-50 ${
                                                 isActive
                                                     ? "bg-indigo-600/30 border-indigo-500/50 text-white shadow-lg"
                                                     : "border-transparent hover:border-indigo-500/30 hover:bg-indigo-600/20"
@@ -152,7 +155,7 @@ export default function Sidebar({
                                             />
                                             {!isCollapsed && (
                                                 <span
-                                                    className={`ml-3 transition-opacity duration-300 ${
+                                                    className={`ml-3 transition-opacity duration-300 z-50 ${
                                                         isActive
                                                             ? "text-white font-semibold"
                                                             : "text-gray-200 group-hover:text-white"
@@ -162,10 +165,10 @@ export default function Sidebar({
                                                 </span>
                                             )}
                                             {isCollapsed && isActive && (
-                                                <div className="absolute -right-1 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-indigo-400 rounded-l" />
+                                                <div className="absolute -right-1 top-1/2 transform -translate-y-1/2 w-1 h-6 bg-indigo-400 rounded-l z-50" />
                                             )}
                                             {isCollapsed && (
-                                                <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-lg z-50 border border-gray-700">
+                                                <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-lg z-[100] border border-gray-700">
                                                     {link.label}
                                                     <div className="absolute -left-1 top-1/2 transform -translate-y-1/2 w-2 h-2 rotate-45 bg-gray-900"></div>
                                                 </div>
@@ -175,21 +178,21 @@ export default function Sidebar({
                                 );
                             })}
 
-                            {/* Frontend Components Toggle - Expanded State */}
-                            {!isCollapsed && (
+                            {/* Frontend Components Toggle - Expanded State - Conditionally Rendered */}
+                            {!isCollapsed && hasFrontendAccess && (
                                 <li className="pt-2">
                                     <button
                                         onClick={() =>
                                             setIsFrontendOpen(!isFrontendOpen)
                                         }
-                                        className="flex items-center justify-between w-full p-3 rounded-xl hover:bg-indigo-600/20 transition-all duration-200 group border border-transparent hover:border-indigo-500/30"
+                                        className="flex items-center justify-between w-full p-3 rounded-xl hover:bg-indigo-600/20 transition-all duration-200 group border border-transparent hover:border-indigo-500/30 z-50"
                                     >
                                         <div className="flex items-center gap-3">
                                             <Globe
                                                 size={20}
                                                 className="text-indigo-300"
                                             />
-                                            <span className="text-gray-200 group-hover:text-white font-medium">
+                                            <span className="text-gray-200 group-hover:text-white font-medium z-50">
                                                 Components
                                             </span>
                                         </div>
@@ -210,7 +213,7 @@ export default function Sidebar({
                                     {/* Frontend Links Dropdown with Smooth Animation */}
                                     <div
                                         ref={dropdownRef}
-                                        className={`ml-6 border-l-2 border-gray-700 pl-3 transition-all duration-300 ease-in-out overflow-hidden ${
+                                        className={`ml-6 border-l-2 border-gray-700 pl-3 transition-all duration-300 ease-in-out overflow-hidden z-50 ${
                                             isFrontendOpen
                                                 ? "max-h-96 opacity-100"
                                                 : "max-h-0 opacity-0"
@@ -226,7 +229,7 @@ export default function Sidebar({
                                                     <Link
                                                         key={link.label}
                                                         href={link.href}
-                                                        className={`flex items-center p-2 rounded-xl transition-all duration-200 group border ${
+                                                        className={`flex items-center p-2 rounded-xl transition-all duration-200 group border z-50 ${
                                                             isActive
                                                                 ? "bg-indigo-600/30 border-indigo-500/50 text-white shadow-lg"
                                                                 : "border-transparent hover:border-indigo-500/30 hover:bg-indigo-600/20"
@@ -246,7 +249,7 @@ export default function Sidebar({
                                                             }`}
                                                         />
                                                         <span
-                                                            className={`ml-3 transition-opacity duration-300 ${
+                                                            className={`ml-3 transition-opacity duration-300 z-50 ${
                                                                 isActive
                                                                     ? "text-white font-medium"
                                                                     : "text-gray-200 group-hover:text-white"
@@ -262,11 +265,11 @@ export default function Sidebar({
                                 </li>
                             )}
 
-                            {/* Frontend Components Toggle - Collapsed State */}
-                            {isCollapsed && (
+                            {/* Frontend Components Toggle - Collapsed State - Conditionally Rendered */}
+                            {isCollapsed && hasFrontendAccess && (
                                 <li>
                                     <button
-                                        className="relative flex items-center justify-center p-3 rounded-xl hover:bg-indigo-600/30 transition-all duration-200 group border border-transparent hover:border-indigo-500/30 w-full"
+                                        className="relative flex items-center justify-center p-3 rounded-xl hover:bg-indigo-600/30 transition-all duration-200 group border border-transparent hover:border-indigo-500/30 w-full z-50"
                                         onClick={() =>
                                             setIsFrontendOpen(!isFrontendOpen)
                                         }
@@ -275,7 +278,7 @@ export default function Sidebar({
                                             size={20}
                                             className="text-indigo-300"
                                         />
-                                        <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-lg z-50 border border-gray-700">
+                                        <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-lg z-[100] border border-gray-700">
                                             Components
                                             <div className="absolute -left-1 top-1/2 transform -translate-y-1/2 w-2 h-2 rotate-45 bg-gray-900"></div>
                                         </div>
@@ -283,7 +286,7 @@ export default function Sidebar({
 
                                     {/* Frontend Links - Collapsed Dropdown with Smooth Animation */}
                                     <div
-                                        className={`ml-2 border-l-2 border-gray-700 pl-2 transition-all duration-300 ease-in-out overflow-hidden ${
+                                        className={`ml-2 border-l-2 border-gray-700 pl-2 transition-all duration-300 ease-in-out overflow-hidden z-50 ${
                                             isFrontendOpen
                                                 ? "max-h-96 opacity-100 mt-1"
                                                 : "max-h-0 opacity-0"
@@ -299,7 +302,7 @@ export default function Sidebar({
                                                     <Link
                                                         key={link.label}
                                                         href={link.href}
-                                                        className={`relative flex items-center justify-center p-2 rounded-xl transition-all duration-200 group border ${
+                                                        className={`relative flex items-center justify-center p-2 rounded-xl transition-all duration-200 group border z-50 ${
                                                             isActive
                                                                 ? "bg-indigo-600/30 border-indigo-500/50 text-white shadow-lg"
                                                                 : "border-transparent hover:border-indigo-500/30 hover:bg-indigo-600/20"
@@ -319,9 +322,9 @@ export default function Sidebar({
                                                             }`}
                                                         />
                                                         {isActive && (
-                                                            <div className="absolute -right-1 top-1/2 transform -translate-y-1/2 w-1 h-4 bg-indigo-400 rounded-l" />
+                                                            <div className="absolute -right-1 top-1/2 transform -translate-y-1/2 w-1 h-4 bg-indigo-400 rounded-l z-50" />
                                                         )}
-                                                        <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-lg z-50 border border-gray-700">
+                                                        <div className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-all duration-300 whitespace-nowrap shadow-lg z-[100] border border-gray-700">
                                                             {link.label}
                                                             <div className="absolute -left-1 top-1/2 transform -translate-y-1/2 w-2 h-2 rotate-45 bg-gray-900"></div>
                                                         </div>
@@ -352,10 +355,10 @@ export default function Sidebar({
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="text-sm font-medium text-white truncate">
-                                        User
+                                        {user?.name || "User"}
                                     </p>
                                     <p className="text-xs text-gray-400 truncate">
-                                        {user?.role}
+                                        {user?.role || "Admin"}
                                     </p>
                                 </div>
                             </div>

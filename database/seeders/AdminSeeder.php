@@ -15,7 +15,7 @@ class AdminSeeder extends Seeder
         User::create([
             'name' => 'Ebisa Asmera',
             'slug' => 'ebisa-asmera',
-            'email' => 'ebisa@gmail.com',
+            'email' => 'ebisaasmera6@gmail.com',
             'password' => bcrypt('1234'),
             'role' => "manager",
             'position' => "Chief Executive Officer (CEO)",

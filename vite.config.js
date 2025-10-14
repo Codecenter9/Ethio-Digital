@@ -10,13 +10,5 @@ export default defineConfig({
         }),
         react(),
     ],
-    //  server: {
-    //     host: true, 
-    //     port: 5173, 
-    //      cors: true,        
-    //     hmr: {
-    //         host: '192.168.84.164', 
-    //         protocol: 'ws',
-    //     },
-    // },
+    
 });

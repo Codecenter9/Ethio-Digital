@@ -11,10 +11,15 @@ const RecentProjects = ({ projects }) => {
 
     const [activeCategory, setActiveCategory] = useState("All");
 
-    const filteredProjects =
-        activeCategory === "All"
-            ? projects
-            : projects.filter((p) => p.category === activeCategory);
+    const filteredProjects = useMemo(() => {
+        const filtered =
+            activeCategory === "All"
+                ? projects
+                : projects.filter((p) => p.category === activeCategory);
+
+        // Shuffle array and take first 5 projects
+        return filtered.slice(0, 5);
+    }, [activeCategory, projects]);
 
     return (
         <section
@@ -28,7 +33,7 @@ const RecentProjects = ({ projects }) => {
                     description="Crafting digital experiences that inspire, engage, and deliver exceptional results for forward-thinking brands."
                 />
 
-                <div className="relative z-10 max-w-7xl mx-auto">
+                <div className="relative z-10 max-w-full mx-auto">
                     {/* Categories Tabs */}
                     <div className="flex justify-center mb-10">
                         <div className="flex items-center gap-6 border border-gray-700/40 rounded-2xl px-6 py-3 bg-gray-900/50 backdrop-blur-sm">

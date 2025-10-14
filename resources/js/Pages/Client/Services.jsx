@@ -16,33 +16,22 @@ export default function Services() {
             "Discover professional digital services by Meskot Digital Solutions — including custom software development, web & mobile apps, graphics design, social media management, digital marketing, and content creation to help your business grow.",
         keywords:
             "Meskot Digital Solutions services, software development, web development, mobile apps, graphics design, branding, social media management, digital marketing, SEO, content creation, Ethiopia tech company",
-        url: "https://meskotdigital.com/services",
-        image: "https://meskotdigital.com/images/services-cover.jpg", // replace with real banner
+        url: "https://meskotdigitals.com/services",
     };
 
     return (
         <>
             <Head>
+                {/* Primary Meta Tags */}
                 <title>{meta.title}</title>
                 <meta name="description" content={meta.description} />
                 <meta name="keywords" content={meta.keywords} />
+                <link rel="canonical" href={meta.url} />
 
-                {/* Open Graph */}
+                {/* Open Graph / Facebook / LinkedIn */}
+                <meta property="og:url" content={meta.url} />
                 <meta property="og:title" content={meta.title} />
                 <meta property="og:description" content={meta.description} />
-                <meta property="og:type" content="website" />
-                <meta
-                    property="og:site_name"
-                    content="Meskot Digital Solutions"
-                />
-                <meta property="og:url" content={meta.url} />
-                <meta property="og:image" content={meta.image} />
-
-                {/* Twitter Card */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={meta.title} />
-                <meta name="twitter:description" content={meta.description} />
-                <meta name="twitter:image" content={meta.image} />
             </Head>
 
             <main className="min-h-screen bg-gradient-to-br from-gray-900 to-gray-950">

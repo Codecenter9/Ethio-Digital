@@ -32,7 +32,7 @@ export function SharedHero({ title, description }) {
     }, []);
 
     return (
-        <section className="relative w-full h-[65vh] md:h-[80vh] flex items-center overflow-hidden bg-gray-900">
+        <section className="relative w-full h-[65vh] md:h-[80vh] flex items-center overflow-hidden bg-gray-300">
             <BubbleBackground />
 
             <div className="relative z-10 container mx-auto px-6 md:px-8 h-full flex flex-col justify-start pt-28">

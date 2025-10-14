@@ -35,9 +35,14 @@ const SingleBlogPage = ({ comments }) => {
     return (
         <>
             <Head>
+                {/* Primary Meta Tags */}
                 <title>{meta.title}</title>
                 <meta name="description" content={meta.description} />
                 <meta name="keywords" content={meta.keywords} />
+
+                {/* Open Graph / Facebook / LinkedIn */}
+                <meta property="og:title" content={meta.title} />
+                <meta property="og:description" content={meta.description} />
             </Head>
 
             <main className="min-h-screen py-12 md:py-24 bg-gradient-to-b from-gray-900 to-gray-950 text-gray-100">

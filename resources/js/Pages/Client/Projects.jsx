@@ -1,28 +1,26 @@
-import React, { useState } from "react";
-import { Search, Filter, ArrowRight } from "lucide-react";
-import { Link, Head } from "@inertiajs/react";
-import { Dropdown } from "@/Components/Client/Layout/DropDown";
+import React, { useMemo, useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { Head } from "@inertiajs/react";
 import ClientLayout from "@/Layouts/ClientLayout/ClientLayout";
 import { SharedHero } from "@/Components/Client/Layout/SharedHero";
 import projects from "@/Components/data/projects";
 
 const Projects = () => {
+    const categories = useMemo(() => {
+        const unique = [...new Set(projects.map((p) => p.category))];
+        return ["All", ...unique];
+    }, [projects]);
+
     const [activeCategory, setActiveCategory] = useState("All");
-    const [searchQuery, setSearchQuery] = useState("");
 
-    const categories = [
-        "All",
-        ...Array.from(new Set(projects.map((p) => p.category))),
-    ];
+    const filteredProjects = useMemo(() => {
+        const filtered =
+            activeCategory === "All"
+                ? projects
+                : projects.filter((p) => p.category === activeCategory);
 
-    const filteredProjects = projects.filter((p) => {
-        const matchesCategory =
-            activeCategory === "All" || p.category === activeCategory;
-        const matchesSearch = p.project_name
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
-    });
+        return filtered;
+    }, [activeCategory, projects]);
 
     const meta = {
         title: "Our Projects | Meskot Digital Solutions",
@@ -30,33 +28,22 @@ const Projects = () => {
             "Browse Meskot Digital Solutions’ portfolio showcasing projects in software development, web design, mobile apps, digital marketing, and creative solutions that drive results.",
         keywords:
             "Meskot Digital Solutions projects, portfolio, case studies, client work, web design projects, mobile app projects, software development Ethiopia, digital marketing projects",
-        url: "https://meskotdigital.com/projects",
-        image: "https://meskotdigital.com/images/projects-cover.jpg", // replace with real image
+        url: "https://meskotdigitals.com/projects",
     };
 
     return (
         <>
             <Head>
+                {/* Primary Meta Tags */}
                 <title>{meta.title}</title>
                 <meta name="description" content={meta.description} />
                 <meta name="keywords" content={meta.keywords} />
+                <link rel="canonical" href={meta.url} />
 
-                {/* Open Graph */}
+                {/* Open Graph / Facebook / LinkedIn */}
+                <meta property="og:url" content={meta.url} />
                 <meta property="og:title" content={meta.title} />
                 <meta property="og:description" content={meta.description} />
-                <meta property="og:type" content="website" />
-                <meta
-                    property="og:site_name"
-                    content="Meskot Digital Solutions"
-                />
-                <meta property="og:url" content={meta.url} />
-                <meta property="og:image" content={meta.image} />
-
-                {/* Twitter Card */}
-                <meta name="twitter:card" content="summary_large_image" />
-                <meta name="twitter:title" content={meta.title} />
-                <meta name="twitter:description" content={meta.description} />
-                <meta name="twitter:image" content={meta.image} />
             </Head>
 
             <main className="bg-gray-900">
@@ -67,32 +54,34 @@ const Projects = () => {
 
                 <div className="py-12 md:py-24 px-6 md:px-12 bg-gradient-to-b from-gray-900 to-gray-950 text-gray-100">
                     <div className="max-w-7xl mx-auto">
-                        {/* Header with search + category filter */}
-                        <div className="flex flex-row justify-end items-center gap-3 mb-12">
-                            <div className="relative w-full md:w-64">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
-                                <input
-                                    type="text"
-                                    placeholder="Search projects..."
-                                    value={searchQuery}
-                                    onChange={(e) =>
-                                        setSearchQuery(e.target.value)
-                                    }
-                                    className="w-full pl-10 pr-4 py-2 rounded-xl bg-gray-800/50 border border-gray-700 text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 backdrop-blur-sm"
-                                />
+                        {/* Category Tabs - Replaced search and dropdown */}
+                        <div className="flex justify-center mb-12">
+                            <div className="flex items-center gap-6 border border-gray-700/40 rounded-2xl px-6 py-3 bg-gray-900/50 backdrop-blur-sm">
+                                {categories.map((cat, idx) => (
+                                    <button
+                                        key={cat}
+                                        onClick={() => setActiveCategory(cat)}
+                                        className={`relative text-sm md:text-base font-medium transition-colors duration-300 ${
+                                            activeCategory === cat
+                                                ? "text-purple-400"
+                                                : "text-gray-400 hover:text-gray-200"
+                                        }`}
+                                    >
+                                        {cat}
+                                        {activeCategory === cat && (
+                                            <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-6 h-0.5 bg-purple-500 rounded-full"></span>
+                                        )}
+                                        {/* Divider */}
+                                        {idx !== categories.length - 1 && (
+                                            <span className="absolute right-[-12px] top-1/2 -translate-y-1/2 w-px h-4 bg-gray-600/50"></span>
+                                        )}
+                                    </button>
+                                ))}
                             </div>
-
-                            <Dropdown
-                                filterIcon={Filter}
-                                title="Filter"
-                                options={categories}
-                                selected={activeCategory}
-                                onSelect={(cat) => setActiveCategory(cat)}
-                            />
                         </div>
 
                         {filteredProjects.length > 0 ? (
-                            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3  gap-8 md:gap-3">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-5">
                                 {filteredProjects.map((project, index) => (
                                     <div
                                         key={project.id}
@@ -171,8 +160,8 @@ const Projects = () => {
                                     No projects found
                                 </h3>
                                 <p className="text-gray-500 max-w-md mx-auto">
-                                    Try adjusting your search or filter to find
-                                    what you are looking for.
+                                    Try adjusting your filter to find what you
+                                    are looking for.
                                 </p>
                             </div>
                         )}

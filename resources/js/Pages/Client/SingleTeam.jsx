@@ -15,10 +15,10 @@ const SingleTeamMember = ({ teamMember }) => {
     useEffect(() => {
         let photo = "/images/teams/default-avatar.webp";
 
-        if (teamMember.email === "juhar@meskotdigitals.com") {
+        if (teamMember.email === "juharendrishu@gmail.com") {
             photo = "/images/teams/juhar.webp";
-        } else if (teamMember.email === "ebisa@gmail.com") {
-            photo = "/images/teams/image2.webp";
+        } else if (teamMember.email === "ebisaasmera6@gmail.com") {
+            photo = "/images/teams/ebisa.webp";
         } else if (teamMember.email === "lidet@gmail.com") {
             photo = "/images/teams/lidet.webp";
         }
@@ -151,16 +151,6 @@ const SingleTeamMember = ({ teamMember }) => {
                                     >
                                         <Send className="w-5 h-5 mr-2" />
                                         Telegram
-                                    </a>
-                                )}
-                                {hasValue(teamMember.email) && (
-                                    <a
-                                        href={`mailto:${email}`}
-                                        target="_blank"
-                                        className="flex items-center px-4 py-2 bg-pink-800/30 hover:bg-pink-800/50 rounded-lg transition-colors"
-                                    >
-                                        <Mail className="w-5 h-5 mr-2" />
-                                        Email
                                     </a>
                                 )}
                             </div>

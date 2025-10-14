@@ -28,10 +28,10 @@ export default function Topbar({ onMenuClick }) {
     useEffect(() => {
         let photo = "/images/teams/default-avatar.webp";
 
-        if (user.email === "juhar@meskotdigitals.com") {
+        if (user.email === "juharendrishu@gmail.com") {
             photo = "/images/teams/juhar.webp";
-        } else if (user.email === "ebisa@gmail.com") {
-            photo = "/images/teams/image2.webp";
+        } else if (user.email === "ebisaasmera6@gmail.com") {
+            photo = "/images/teams/ebisa.webp";
         } else if (user.email === "lidet@gmail.com") {
             photo = "/images/teams/lidet.webp";
         }

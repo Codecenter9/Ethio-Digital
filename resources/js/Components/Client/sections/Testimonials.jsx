@@ -13,7 +13,7 @@ const testimonials = [
     {
         name: "Sara Bekele",
         role: "Business Owner",
-        avatar: "/images/teams.webp",
+        avatar: "/images/testimonial/femaletestimoni.webp",
         comment:
             "Working with Meskot Digitals was a game changer for my business. They built a modern website and gave us the digital presence we needed to reach more customers.",
         rating: 5,
@@ -21,7 +21,7 @@ const testimonials = [
     {
         name: "Michael Tesfaye",
         role: "Startup Founder",
-        avatar: "/images/teams.webp",
+        avatar: "/images/testimonial/maletestimoni.webp",
         comment:
             "Their team was creative, reliable, and fast. From design to launch, everything was smooth, and the final product exceeded our expectations.",
         rating: 5,
@@ -29,7 +29,7 @@ const testimonials = [
     {
         name: "Hana Yared",
         role: "Marketing Manager",
-        avatar: "/images/teams.webp",
+        avatar: "/images/testimonial/femaletestimoni.webp",
         comment:
             "Meskot Digitals helped us grow our online campaigns with smart strategies and great content. They really understand how to connect with audiences.",
         rating: 5,
@@ -37,7 +37,7 @@ const testimonials = [
     {
         name: "Daniel Mekonnen",
         role: "E-commerce Manager",
-        avatar: "/images/teams.webp",
+        avatar: "/images/testimonial/maletestimoni.webp",
         comment:
             "Our online sales increased by 120% after Meskot Digitals redesigned our website and implemented their SEO strategies.",
         rating: 5,
@@ -45,7 +45,7 @@ const testimonials = [
     {
         name: "Liya Abraham",
         role: "Non-profit Director",
-        avatar: "/images/teams.webp",
+        avatar: "/images/testimonial/femaletestimoni.webp",
         comment:
             "They perfectly captured our mission and vision in our website design. The donation system they implemented has been seamless.",
         rating: 5,

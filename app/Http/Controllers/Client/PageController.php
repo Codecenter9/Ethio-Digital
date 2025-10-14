@@ -81,11 +81,18 @@ class PageController extends Controller
         $validated = $request->validate([
             'name'    => 'required|string|max:255',
             'email'   => 'required|email|max:255',
+            'phone'   => 'nullable|string|max:15',
             'subject' => 'required|string|max:255',
             'message' => 'required|string',
         ]);
 
-        Email::create($validated);
+        $email = new Email();
+        $email->name = $validated['name'];
+        $email->email = $validated['email'];
+        $email->phone = $validated['phone'];
+        $email->subject = $validated['subject'];
+        $email->message = $validated['message'];
+        $email->save();
 
         return back()->with('success', 'Message sent successfully!');
     }

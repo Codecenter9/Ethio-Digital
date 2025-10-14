@@ -2,7 +2,7 @@ import { useForm } from "@inertiajs/react";
 import { Send, Clock, CheckCircle, AlertCircle } from "lucide-react";
 import { useRef } from "react";
 
-const ContactForm = ({ layout = "home" }) => {
+const ContactForm = ({ layout }) => {
     const formRef = useRef(null);
     const subscribeFormRef = useRef(null);
 
@@ -17,6 +17,7 @@ const ContactForm = ({ layout = "home" }) => {
     } = useForm({
         name: "",
         email: "",
+        phone: "",
         subject: "",
         message: "",
     });
@@ -54,12 +55,19 @@ const ContactForm = ({ layout = "home" }) => {
     };
 
     return (
-        <div className={`${layout === "home" ? "max-w-6xl mx-auto" : ""}`}>
+        <div
+            className={`${
+                layout === "home"
+                    ? "px-6 md:px-12 grid grid-cols-1 md:grid-cols-3 gap-5"
+                    : ""
+            }`}
+        >
             {/* Contact Form */}
             <div
                 data-aos="fade-left"
                 data-aos-delay="50"
-                className="bg-gray-900/20 backdrop-blur-sm rounded-2xl p-8 border border-gray-800 shadow-2xl"
+                className={`bg-gray-900/20 backdrop-blur-sm rounded-2xl p-8 border border-gray-800 shadow-2xl ${(layout =
+                    "home" ? "col-span-2" : "")}`}
             >
                 <div className="flex items-center gap-3 mb-6">
                     <div className="p-2 bg-gradient-to-br from-pink-500 to-purple-600 rounded-lg">
@@ -112,7 +120,7 @@ const ContactForm = ({ layout = "home" }) => {
                                 onChange={(e) =>
                                     setData("email", e.target.value)
                                 }
-                                placeholder="your.email@example.com"
+                                placeholder="youremail@example.com"
                                 className="w-full px-4 py-4 rounded-xl bg-gray-900/30 border border-gray-700 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 outline-none transition text-white placeholder-gray-400"
                             />
                             {errors.email && (
@@ -122,6 +130,23 @@ const ContactForm = ({ layout = "home" }) => {
                                 </p>
                             )}
                         </div>
+                    </div>
+                    {/* phone */}
+                    <div>
+                        <input
+                            type="text"
+                            name="phone"
+                            value={data.phone}
+                            onChange={(e) => setData("phone", e.target.value)}
+                            placeholder="Enter your phone"
+                            className="w-full px-4 py-4 rounded-xl bg-gray-900/30 border border-gray-700 focus:border-pink-500 focus:ring-2 focus:ring-pink-500/20 outline-none transition text-white placeholder-gray-400"
+                        />
+                        {errors.phone && (
+                            <p className="mt-2 text-sm text-red-400 flex items-center gap-1">
+                                <AlertCircle size={14} />
+                                {errors.phone}
+                            </p>
+                        )}
                     </div>
 
                     {/* subject */}
@@ -141,7 +166,6 @@ const ContactForm = ({ layout = "home" }) => {
                             </p>
                         )}
                     </div>
-
                     {/* message */}
                     <div>
                         <textarea
@@ -159,7 +183,6 @@ const ContactForm = ({ layout = "home" }) => {
                             </p>
                         )}
                     </div>
-
                     {/* submit */}
                     <button
                         type="submit"
@@ -175,9 +198,10 @@ const ContactForm = ({ layout = "home" }) => {
             <div
                 data-aos="fade-left"
                 data-aos-delay="100"
-                className={`bg-gradient-to-br from-gray-900/40 to-purple-900/20 rounded-2xl p-8 border border-purple-500/20 shadow-2xl mt-6 ${
-                    layout === "home" ? "hidden" : ""
-                }`}
+                className={`bg-gradient-to-br from-gray-900/40 to-purple-900/20 rounded-2xl p-8 border border-purple-500/20 shadow-2xl mt-6 ${(layout =
+                    "home"
+                        ? "flex flex-col items-start gap-3 h-max p-5"
+                        : "")}`}
             >
                 <div className="flex items-center gap-3 mb-4">
                     <Clock className="w-5 h-5 text-purple-400" />
@@ -195,14 +219,17 @@ const ContactForm = ({ layout = "home" }) => {
                     <div className="p-4 bg-green-500/10 border border-green-500/30 rounded-xl flex items-center gap-3">
                         <CheckCircle className="w-5 h-5 text-green-400" />
                         <span className="text-green-400 font-medium">
-                            Thank you for subscribing!
+                            Thank you for subscribing! from now on you'll get
+                            updated for our news
                         </span>
                     </div>
                 ) : (
                     <form
                         ref={subscribeFormRef}
                         onSubmit={handleSubscribe}
-                        className="flex gap-3"
+                        className={`flex gap-3 ${(layout = "home"
+                            ? "flex-col gap-5 w-full"
+                            : "")}`}
                     >
                         <input
                             type="email"
@@ -212,7 +239,6 @@ const ContactForm = ({ layout = "home" }) => {
                                 setSubData("email", e.target.value)
                             }
                             placeholder="Enter your email"
-                            required
                             className="flex-1 px-4 py-3 rounded-xl bg-gray-900/30 border border-gray-700 focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 outline-none transition text-white placeholder-gray-400"
                         />
                         <button

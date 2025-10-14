@@ -27,4 +27,13 @@ class EmailController extends Controller
         $email->status = 'seen';
         $email->save();
     }
+
+    public function deleteemails($emailId)
+    {
+        $email = Email::find($emailId);
+        if (!$email) {
+            return response()->json(['error' => 'Email not found'], 404);
+        }
+        $email->delete();
+    }
 }

@@ -14,7 +14,7 @@ const Navbar = () => {
             submenu: [
                 { name: "About Us", path: "/about" },
                 { name: "Teams", path: "/teams" },
-                { name: "Careers", path: "/careers" },
+                // { name: "Careers", path: "/careers" },
             ],
         },
         { name: "Services", path: "/services" },

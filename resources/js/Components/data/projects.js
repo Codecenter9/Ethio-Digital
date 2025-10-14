@@ -1,58 +1,103 @@
 const projects = [
+
   {
     id: 1,
-    project_name: "Crown unique dental clinic",
+    project_name: "Crown Unique Dental Clinic",
     project_url: "https://vm.tiktok.com/ZMAfTNg9b/",
-    category: "Software",
-    completed:true,
+    category: "Design & Branding",
+    completed: false,
     description:
-      "Custom-built apps and websites give businesses an edge. Tailored software can improve efficiency, automate processes, and provide a seamless experience for your customers. Learn why investing in the right technology is key to staying competitive in 2025.",
+      "A visually appealing brand and web presence for a dental clinic. Focused on professionalism, patient comfort, and consistent branding across digital platforms.",
     image: "/images/projects/crownuniquedental.webp",
-     },
-  
-  {
+  },
+
+   {
     id: 2,
-    project_name: "DrTigist clinic/ዶ/ር ትዕግሥት ክሊኒክ",
-    project_url: "https://vm.tiktok.com/ZMAfTrSxm/",
-    category: "Design",
-     completed:true,
+    project_name: "LeSeket – Fashion & Shopping Campaign",
+    project_url: "https://vm.tiktok.com/ZMAfTrkrK/",
+    category: "Digital Marketing",
+    completed: false,
     description:
-      "Good design tells a story and builds trust. Strong visual branding helps your business stand out, attract the right audience, and leave a lasting impression. Discover how graphics, logos, and visuals can strengthen your identity in the digital world.",
-    image: "/images/projects/drtigistclinic.webp",
-   },
+      "A creative digital marketing campaign for a local fashion business, emphasizing storytelling, visual appeal, and audience engagement across social media platforms.",
+    image: "/images/projects/goshoping.webp",
+  },
 
   {
     id: 3,
-    project_name: "ለስኬት ይልበሱ, ለደስታ ይግዙ. When life gets tough, go shopping. ",
-    project_url: "https://vm.tiktok.com/ZMAfTrkrK/",
-    category: "Content",
-     completed:true,
+    project_name: "Dr. Tigist Clinic",
+    project_url: "https://vm.tiktok.com/ZMAfTrSxm/",
+    category: "Design & Branding",
+    completed: false,
     description:
-      "From blogs and social posts to videos and newsletters, quality content engages your audience and builds trust. Learn practical tips on creating content that resonates, tells your brand story, and drives results for your business in 2025.",
-    image: "/images/projects/goshoping.webp",
-     },
+      "Brand and web design for a medical clinic emphasizing trust and a modern UI experience for patients. Highlights clean layout and visual consistency.",
+    image: "/images/projects/drtigistclinic.webp",
+  },
 
   {
     id: 4,
-    project_name: "Luxury cafe and restaurant",
-    project_url: "https://vm.tiktok.com/ZMAfTdxUJ/",
-    category: "Social Media",
-     completed:false,
+    project_name: "Downline Data - MLM Analytics Platform",
+    project_url: "https://downlinedata.com/",
+    category: "Software Solutions",
+    completed: true,
     description:
-      "Engagement, consistency, and creativity are essential for social media success. Learn actionable strategies for building a strong presence, connecting with your audience, and growing followers on platforms like Facebook, Instagram, and TikTok.",
-    image: "/images/projects/luxurycafe.webp",
-   },
+      "A powerful MLM analytics platform providing real-time dashboards and insights to monitor network performance. Optimized for business growth and secure user experiences.",
+    image: "/images/projects/mlmwebsite.webp",
+  },
 
   {
     id: 5,
-    project_name: "Tulu Dimtu restaurant",
-    project_url: "https://vm.tiktok.com/ZMAunfSDT/",
-    category: "Marketing",
-     completed:true,
+    project_name: "Pharmacy Management System",
+    project_url: "#",
+    category: "Software Solutions",
+    completed: true,
     description:
-      "Effective digital marketing is key to reaching more customers online. Discover strategies for SEO, social media campaigns, email marketing, and paid ads that are cost-effective, measurable, and designed to grow your brand in 2025.",
+      "A comprehensive pharmacy management software designed to handle inventory, sales, and reporting efficiently. Streamlines workflow and ensures accuracy in daily operations.",
+    image: "/images/projects/pharmacymanagementsystem.webp",
+  },
+
+  {
+    id: 6,
+    project_name: "Luxury Cafe & Restaurant Campaign",
+    project_url: "https://vm.tiktok.com/ZMAfTdxUJ/",
+    category: "Digital Marketing",
+    completed: false,
+    description:
+      "Ongoing branding and social media project to enhance online visibility of a luxury cafe. Focused on creative visuals, consistent content, and customer engagement.",
+    image: "/images/projects/luxurycafe.webp",
+  },
+
+  {
+    id: 7,
+    project_name: "Campus Delivery System",
+    project_url: "#",
+    category: "Software Solutions",
+    completed: true,
+    description:
+      "A software platform for managing delivery services for campus students. Includes tracking, ordering, and efficient delivery workflow management.",
+    image: "/images/projects/campusdeliverywebsite.webp",
+  },
+
+  {
+    id: 8,
+    project_name: "Tulu Dimtu Restaurant Website",
+    project_url: "https://vm.tiktok.com/ZMAunfSDT/",
+    category: "Design & Branding",
+    completed: false,
+    description:
+      "Branding and web design for a modern restaurant. Features responsive design, SEO-optimized pages, and visually appealing digital marketing elements.",
     image: "/images/projects/tuludimturesturant.webp",
-     },
+  },
+
+  {
+    id: 9,
+    project_name: "Charity Donation Website",
+    project_url: "#",
+    category: "Software Solutions",
+    completed: true,
+    description:
+      "A platform for managing online donations for charity projects. Provides secure transactions, donor tracking, and an intuitive interface for users.",
+    image: "/images/projects/charitydonationwebsite.webp",
+  }
 ];
 
 export default projects;
